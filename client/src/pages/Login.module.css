@@ -1,0 +1,106 @@
+.header {
+  display: flex;
+  margin: 10px 30px;
+}
+
+.home_logo {
+  margin-top: 10px;
+  font-size: 25px;
+  color: #303030;
+  text-decoration: none;
+}
+
+.member_button {
+  display: flex;
+  margin-left: auto;
+}
+
+.login {
+  background-color: #fff;
+  border-radius: 30px;
+  width: 156px;
+  height: 58px;
+  padding: 9px;
+  font-size: 20px;
+  border-color: #d9d9d9;
+  border-style: solid;
+}
+
+.login > a {
+  color: #303030;
+  text-decoration: none;
+}
+
+.registration {
+  background-color: #4adb50;
+  border-style: none;
+  border-radius: 30px;
+  width: 156px;
+  height: 58px;
+  padding: 9px;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+.registration > a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.container {
+  margin: 80px 360px 0 360px;
+  text-align: center;
+}
+
+.container > span {
+  font-size: 32px;
+}
+
+.login_container {
+  border-top: 1px solid #d2d2d2;
+  margin-top: 35px;
+}
+
+.login__items {
+  display: grid;
+  margin-top: 40px;
+}
+
+.registration_notice {
+  display: grid;
+  display: block;
+  margin: 10px 0 40px 0;
+  font-size: 18px;
+}
+
+.registration_notice > a {
+  color: #4adb50;
+  margin-left: 5px;
+}
+
+.login__items > input {
+  width: 50%;
+  height: 60px;
+  border: none;
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  color: #2c2c2c;
+  padding: 5px 20px 0 20px;
+  margin: 10px auto;
+  font-size: 26px;
+}
+
+.login_submitb {
+  background-color: #4adb50;
+  width: 50%;
+  height: 60px;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  text-align: center;
+  font-size: 26px;
+}
+
+input:focus {
+  outline: none;
+}

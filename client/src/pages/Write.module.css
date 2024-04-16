@@ -1,0 +1,100 @@
+.header {
+  display: flex;
+  margin: 10px 30px;
+}
+
+.home_logo {
+  margin-top: 10px;
+  font-size: 25px;
+  color: #303030;
+  text-decoration: none;
+}
+
+.member_button {
+  display: flex;
+  margin-left: auto;
+}
+
+.login {
+  background-color: #fff;
+  border-radius: 30px;
+  width: 156px;
+  height: 58px;
+  padding: 9px;
+  font-size: 20px;
+  border-color: #d9d9d9;
+  border-style: solid;
+}
+
+.login > a {
+  color: #303030;
+  text-decoration: none;
+}
+
+.registration {
+  background-color: #4adb50;
+  border-style: none;
+  border-radius: 30px;
+  width: 156px;
+  height: 58px;
+  padding: 9px;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+.registration > a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.container {
+  margin: 80px 360px 0 360px;
+}
+
+.write_form {
+  border-top: 1px solid #d2d2d2;
+  margin-top: 35px;
+}
+
+.write_title > input {
+  width: 100%;
+  height: 60px;
+  border: none;
+  background-color: #f0f0f0;
+  border-radius: 20px;
+  color: #2c2c2c;
+  padding: 5px 20px 0 20px;
+  margin: 20px auto;
+  font-size: 24px;
+}
+
+.write_content > textarea {
+  width: 100%;
+  height: 250px;
+  border-color: #d9d9d9;
+  background-color: #fff;
+  color: #2c2c2c;
+  padding: 15px 20px 0 20px;
+  margin: 20px auto;
+  font-size: 24px;
+}
+
+.write_submitb {
+  background-color: #4adb50;
+  width: 50%;
+  height: 60px;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  text-align: center;
+  font-size: 24px;
+  margin-left: 25%;
+}
+
+input:focus {
+  outline: none;
+}
+
+textarea:focus {
+  outline: none;
+}

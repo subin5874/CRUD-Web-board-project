@@ -1,0 +1,109 @@
+.header {
+  display: flex;
+  margin: 10px 30px;
+}
+
+.home_logo {
+  margin-top: 10px;
+  font-size: 25px;
+  color: #303030;
+  text-decoration: none;
+}
+
+.member_button {
+  display: flex;
+  margin-left: auto;
+}
+
+.login {
+  background-color: #fff;
+  border-radius: 30px;
+  width: 156px;
+  height: 58px;
+  padding: 9px;
+  font-size: 20px;
+  border-color: #d9d9d9;
+  border-style: solid;
+}
+
+.login > a {
+  color: #303030;
+  text-decoration: none;
+}
+
+.registration {
+  background-color: #4adb50;
+  border-style: none;
+  border-radius: 30px;
+  width: 156px;
+  height: 58px;
+  padding: 9px;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+.registration > a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.container {
+  margin: 80px 360px 0 360px;
+}
+
+.table_container > span {
+  font-size: 20px;
+}
+
+table {
+  width: 100%;
+  height: 100%;
+}
+
+thead {
+  height: 80px;
+}
+
+.thead > tr > th {
+  height: 40px;
+  padding: 2px;
+  text-align: center;
+  border-bottom: 1px solid #d2d2d2;
+}
+
+.t_name,
+.t_date,
+.t_like {
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  margin-top: 30px;
+  border-top: 1px solid #808080;
+}
+
+.tbody > tr > td > div > span {
+  font-size: 24px;
+}
+
+.title_link {
+  font-size: 24px;
+  text-decoration: none;
+  color: black;
+}
+
+.tbody > tr > td {
+  height: 60px;
+  border-bottom: 1px solid #d2d2d2;
+}
+
+.thead > tr > th {
+  font-size: 24px;
+  font-weight: normal;
+}
+
+.comment_num {
+  margin-left: 5px;
+  color: #ff2f3b;
+}

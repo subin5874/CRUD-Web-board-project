@@ -1,0 +1,191 @@
+.header {
+  display: flex;
+  margin: 10px 30px;
+}
+
+.home_logo {
+  margin-top: 10px;
+  font-size: 25px;
+  color: #303030;
+  text-decoration: none;
+}
+
+.member_button {
+  display: flex;
+  margin-left: auto;
+}
+
+.login {
+  background-color: #fff;
+  border-radius: 30px;
+  width: 156px;
+  height: 58px;
+  padding: 9px;
+  font-size: 20px;
+  border-color: #d9d9d9;
+  border-style: solid;
+}
+
+.login > a {
+  color: #303030;
+  text-decoration: none;
+}
+
+.registration {
+  background-color: #4adb50;
+  border-style: none;
+  border-radius: 30px;
+  width: 156px;
+  height: 58px;
+  padding: 9px;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+.registration > a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.container {
+  margin: 80px 360px 0 360px;
+}
+
+.container > span {
+  font-size: 20px;
+}
+
+.board_header {
+  margin-top: 20px;
+}
+
+.board_header > span {
+  font-size: 32px;
+}
+
+.board_data {
+  margin-top: 8px;
+}
+
+.board_data > span {
+  font-size: 18px;
+  margin-right: 20px;
+}
+
+.board_content {
+  border-top: 1px solid #d2d2d2;
+  margin: 15px 0 100px 0;
+  padding-top: 25px;
+}
+
+.board_content > span {
+  font-size: 20px;
+}
+
+.board_box {
+  display: flex;
+}
+
+.like_article {
+  margin-right: 8px;
+}
+
+.like_icon {
+  display: inline-block;
+}
+
+.like_icon > img {
+  width: 30px;
+  height: 30px;
+  vertical-align: bottom;
+  margin-right: 8px;
+}
+
+.like_article > span {
+  vertical-align: super;
+  margin-right: 5px;
+}
+
+.like_sum {
+  font-weight: bolder;
+}
+
+.comment_article > img {
+  width: 32px;
+  height: 32px;
+  vertical-align: bottom;
+  margin-right: 8px;
+  margin-top: -2px;
+}
+
+.comment_article > span {
+  vertical-align: super;
+  margin-right: 5px;
+}
+
+.comment_sum {
+  font-weight: bolder;
+}
+
+.board_comment {
+  margin-top: 10px;
+  border-top: 1px solid #808080;
+}
+
+.board_comment > span {
+  text-align: center;
+  display: block;
+  border-bottom: 1px solid #d2d2d2;
+  font-size: 20px;
+  padding: 10px 0;
+}
+
+.comment_container {
+  display: grid;
+  margin: 8px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d2d2d2;
+}
+
+.comment_writer {
+  font-size: 20px;
+  font-weight: bolder;
+  margin: 6px 0 8px;
+}
+
+.comment {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.comment_date {
+  font-size: 18px;
+  color: #999999;
+}
+
+.comment_form > input {
+  width: 100%;
+  height: 60px;
+  border: 1px solid #d2d2d2;
+  background-color: #ffffff;
+  border-radius: 20px;
+  color: #2c2c2c;
+  padding: 2px 70px 0 20px;
+  margin: 20px 0;
+  font-size: 18px;
+  position: relative;
+}
+
+.comment_submitb {
+  position: absolute;
+  background: none;
+  border: none;
+  color: gray;
+  padding-top: 36px;
+  margin-left: -60px;
+  font-size: 18px;
+}
+
+input:focus {
+  outline: none;
+}
