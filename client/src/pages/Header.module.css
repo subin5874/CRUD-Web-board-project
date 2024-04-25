@@ -15,7 +15,7 @@
   margin-left: auto;
 }
 
-.login {
+.white_btn {
   background-color: #fff;
   border-radius: 30px;
   width: 156px;
@@ -24,14 +24,15 @@
   font-size: 20px;
   border-color: #d9d9d9;
   border-style: solid;
+  margin-left: 15px;
 }
 
-.login > a {
+.white_btn > a {
   color: #303030;
   text-decoration: none;
 }
 
-.registration {
+.green_btn {
   background-color: #4adb50;
   border-style: none;
   border-radius: 30px;
@@ -42,7 +43,7 @@
   margin-left: 15px;
 }
 
-.registration > a {
+.green_btn > a {
   color: #fff;
   text-decoration: none;
 }
