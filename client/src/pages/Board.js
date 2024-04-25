@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Board.module.css';
+import Header from './Header';
 
-function Board() {
+function Board({ isLogin }) {
   const [likeState, setLikeState] = useState(0);
   let [likeSum, setLikeSum] = useState(10);
   const [comment, setComment] = useState();
@@ -25,20 +26,7 @@ function Board() {
 
   return (
     <div className="main">
-      <header className={styles.header}>
-        <Link to="/" className={styles.home_logo}>
-          커뮤니티
-        </Link>
-        <div className={styles.member_button}>
-          <button type="button" className={styles.login}>
-            <Link to="/login">로그인</Link>
-          </button>
-          <button type="button" className={styles.registration}>
-            <Link to="/registration">회원가입</Link>
-          </button>
-        </div>
-      </header>
-      <hr />
+      <Header isLogin={isLogin} />
       <section className={styles.container}>
         <span>게시글</span>
         <div className={styles.board_header}>

@@ -32,9 +32,9 @@ function App() {
           <Route path="/login" exact element={<Login />} />
           <Route path="/registration" exact element={<Registration />} />
           <Route path="/checkPass" exact element={<CheckPass />} />
-          <Route path="/board" exact element={<Board />} />
-          <Route path="/mypage" exact element={<Mypage />} />
-          <Route path="/write" exact element={<Write />} />
+          <Route path="/board" exact element={<Board isLogin={isLogin} />} />
+          <Route path="/mypage" exact element={<Mypage isLogin={isLogin} />} />
+          <Route path="/write" exact element={<Write isLogin={isLogin} />} />
         </Routes>
       </BrowserRouter>
     </div>

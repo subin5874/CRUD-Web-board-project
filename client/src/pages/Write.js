@@ -2,8 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styles from './Write.module.css';
+import Header from './Header';
 
-function Write() {
+function Write({ isLogin }) {
   const {
     register,
     handleSubmit,
@@ -15,20 +16,7 @@ function Write() {
 
   return (
     <div className="main">
-      <header className={styles.header}>
-        <Link to="/" className={styles.home_logo}>
-          커뮤니티
-        </Link>
-        <div className={styles.member_button}>
-          <button type="button" className={styles.login}>
-            <Link to="/login">로그인</Link>
-          </button>
-          <button type="button" className={styles.registration}>
-            <Link to="/registration">회원가입</Link>
-          </button>
-        </div>
-      </header>
-      <hr />
+      <Header isLogin={isLogin} />
       <section className={styles.container}>
         <div className={styles.write_container}>
           <span>글쓰기</span>

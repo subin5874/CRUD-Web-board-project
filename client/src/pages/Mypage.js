@@ -4,8 +4,9 @@ import styles from './Mypage.module.css';
 import PostList from './Mypage_component/PostList';
 import CommentList from './Mypage_component/CommentList';
 import LikeList from './Mypage_component/LikeList';
+import Header from './Header';
 
-function Mypage() {
+function Mypage({ isLogin }) {
   const [category, setCategory] = useState('post');
   const [content, setContent] = useState('post');
   const categories = [
@@ -64,20 +65,7 @@ function Mypage() {
   ]);
   return (
     <div className="main">
-      <header className={styles.header}>
-        <Link to="/" className={styles.home_logo}>
-          커뮤니티
-        </Link>
-        <div className={styles.member_button}>
-          <button type="button" className={styles.login}>
-            <Link to="/login">로그인</Link>
-          </button>
-          <button type="button" className={styles.registration}>
-            <Link to="/registration">회원가입</Link>
-          </button>
-        </div>
-      </header>
-      <hr />
+      <Header isLogin={isLogin} />
       <section className={styles.container}>
         <div className={styles.table_container}>
           <span>내 정보</span>
