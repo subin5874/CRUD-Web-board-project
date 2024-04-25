@@ -14,6 +14,7 @@ function Mypage() {
     setCategory(category);
     console.log(category);
   };
+
   const [postData, setPostData] = useState([
     {
       title: '안녕하세요 처음 글을 써요',
@@ -71,19 +72,19 @@ function Mypage() {
         <div className={styles.table_container}>
           <span>내 정보</span>
           <div className={styles.mypage_header}>
-            <div className="user_data">
+            <div className={styles.user_data}>
               <span>겨울 개구리</span>
               <span>(subin5874)</span>
-              <Link to="/checkPass" className="change_info_btn">
+              <Link to="/checkPass" className={styles.change_info_btn}>
                 정보 수정
               </Link>
             </div>
             <div className={styles.user_state}>
-              <div className="post_data">
+              <div className={styles.user_post_data}>
                 <span>작성글</span>
                 <span>3</span>
               </div>
-              <div className="like_data">
+              <div className={styles.user_post_data}>
                 <span>좋아요</span>
                 <span>12</span>
               </div>
@@ -92,9 +93,9 @@ function Mypage() {
           {categories.map((data) => {
             return (
               <div className="user_data_list">
-                <button onClick={handleClickButton} name={data.value}>
-                  {data.value}
-                </button>
+                <Link to="#" onClick={handleClickButton} name={data.value}>
+                  {data.name}
+                </Link>
               </div>
             );
           })}

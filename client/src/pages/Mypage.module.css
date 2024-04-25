@@ -54,3 +54,35 @@
 .table_container > span {
   font-size: 20px;
 }
+
+.mypage_header {
+  margin-top: 20px;
+}
+
+.user_data > span {
+  font-size: 28px;
+  margin-right: 5px;
+}
+
+.change_info_btn {
+  border: solid 1px gray;
+  border-radius: 30px;
+  font-size: 14px;
+  padding: 2px 3px;
+  color: gray;
+  text-decoration: none;
+}
+
+.user_state {
+  margin-top: 10px;
+}
+
+.user_post_data {
+  display: inline-block;
+  margin-right: 20px;
+}
+
+.user_post_data > span {
+  font-size: 20px;
+  margin-right: 8px;
+}

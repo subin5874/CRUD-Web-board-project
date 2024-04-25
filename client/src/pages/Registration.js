@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Registration.module.css';
 import axios from 'axios';
 
@@ -18,18 +18,22 @@ function Registration() {
     console.log(e.target.value);
   };
 
+  const navigate = useNavigate();
+
   //회원가입 정보 입력
   const submitForm = (data) => {
     console.log(data);
 
     axios
-      .post('http://localhost:3001/registration', {
+      .post('http://localhost:3002/registration', {
         id: data.id,
         password: data.password,
         userName: data.nick,
       })
       .then((res) => {
         console.log(res);
+        window.alert('회원가입이 완료되었습니다.');
+        navigate('/login');
       })
       .catch((err) => {
         console.log(err);

@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Login.module.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
   const [ID, setID] = useState();
   const [Password, setPassword] = useState();
+
+  const navigate = useNavigate();
 
   const onIDHandler = (event) => {
     setID(event.currentTarget.value);
@@ -13,6 +17,19 @@ function Login() {
     setPassword(event.currentTarget.value);
   };
 
+  useEffect(
+    () => {
+      axios
+        .get('http://localhost:3002/user_inform/userInfo')
+        .then((res) => {
+          console.log(res);
+        })
+        .catch();
+    },
+    // 페이지 호출 후 처음 한번만 호출될 수 있도록 [] 추가
+    []
+  );
+
   const onSubmitHandler = (event) => {
     // 버튼만 누르면 리로드 되는것을 막아줌
     event.preventDefault();
@@ -20,17 +37,32 @@ function Login() {
     console.log(ID);
     console.log(Password);
 
-    // axios
-    //   .post('http://localhost:3001/login', {
-    //     username: ID,
-    //     password: Password,
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    axios
+      .post('http://localhost:3002/user_inform/login', {
+        id: ID,
+        password: Password,
+      })
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log('res.data.id :: ', res.data.id);
+        console.log('res.data.msg :: ', res.data.msa);
+        if (res.data.id === undefined) {
+          // id 일치하지 않는 경우 userId = undefined, msg = '입력하신 id 가 일치하지 않습니다.'
+          console.log('======================', res.data.msg);
+          alert('입력하신 아이디 또는 비밀번호가 일치하지 않습니다.');
+        } else if (res.data.id === ID) {
+          // id, pw 모두 일치 userId = userId1, msg = undefined
+          console.log('======================', '로그인 성공');
+          sessionStorage.setItem('user_id', ID);
+          alert('로그인에 성공했습니다.');
+          navigate('/');
+          window.location.replace('/');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -57,13 +89,13 @@ function Login() {
               <input
                 type="text"
                 placeholder="아이디"
-                value={ID}
+                value={ID || ''}
                 onChange={onIDHandler}
               />
               <input
                 type="password"
                 placeholder="비밀번호"
-                value={Password}
+                value={Password || ''}
                 onChange={onPasswordHandler}
               />
             </article>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
 
-function Home() {
+function Home({ isLogin }) {
   const [postList, setPostList] = useState([
     {
       title: '안녕하세요 처음 글을 써요',
@@ -27,6 +27,13 @@ function Home() {
     },
   ]);
 
+  const onLogout = () => {
+    // sessionStorage 에 user_id 로 저장되어있는 아이템을 삭제한다.
+    sessionStorage.removeItem('user_id');
+    // App 으로 이동(새로고침)
+    document.location.href = '/';
+  };
+
   return (
     <div className="main">
       <header className={styles.header}>
@@ -44,6 +51,11 @@ function Home() {
       </header>
       <hr />
       <section className={styles.container}>
+        {isLogin ? (
+          <button type="button" onClick={onLogout}>
+            logout
+          </button>
+        ) : null}
         <div className={styles.table_container}>
           <span>12개의 글</span>
           <table>
