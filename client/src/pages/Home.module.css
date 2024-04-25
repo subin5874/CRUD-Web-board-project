@@ -84,11 +84,11 @@ table {
 }
 
 .tbody > tr > td > div > span {
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .title_link {
-  font-size: 24px;
+  font-size: 22px;
   text-decoration: none;
   color: black;
 }
@@ -99,7 +99,7 @@ table {
 }
 
 .thead > tr > th {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: normal;
 }
 

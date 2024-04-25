@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
+import Header from './Header';
 
 function Home({ isLogin }) {
   const [postList, setPostList] = useState([
@@ -36,6 +37,7 @@ function Home({ isLogin }) {
 
   return (
     <div className="main">
+      <Header />
       <header className={styles.header}>
         <Link to="/" className={styles.home_logo}>
           커뮤니티
