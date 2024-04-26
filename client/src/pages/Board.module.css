@@ -1,52 +1,3 @@
-.header {
-  display: flex;
-  margin: 10px 30px;
-}
-
-.home_logo {
-  margin-top: 10px;
-  font-size: 25px;
-  color: #303030;
-  text-decoration: none;
-}
-
-.member_button {
-  display: flex;
-  margin-left: auto;
-}
-
-.login {
-  background-color: #fff;
-  border-radius: 30px;
-  width: 156px;
-  height: 58px;
-  padding: 9px;
-  font-size: 20px;
-  border-color: #d9d9d9;
-  border-style: solid;
-}
-
-.login > a {
-  color: #303030;
-  text-decoration: none;
-}
-
-.registration {
-  background-color: #4adb50;
-  border-style: none;
-  border-radius: 30px;
-  width: 156px;
-  height: 58px;
-  padding: 9px;
-  font-size: 20px;
-  margin-left: 15px;
-}
-
-.registration > a {
-  color: #fff;
-  text-decoration: none;
-}
-
 .container {
   margin: 80px 360px 0 360px;
 }
@@ -188,4 +139,20 @@
 
 input:focus {
   outline: none;
+}
+
+.disable_comment {
+  width: 100%;
+  height: 60px;
+  border: 1px solid #d2d2d2;
+  background-color: #ffffff;
+  border-radius: 20px;
+  margin: 20px 0;
+}
+
+.disable_message {
+  font-size: 18px;
+  text-decoration: none;
+  display: inline-block;
+  margin: 15px;
 }
