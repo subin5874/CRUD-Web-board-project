@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 import styles from './Login.module.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Header from './Header';
 
-function Login() {
+function Login({ isLogin }) {
   const [ID, setID] = useState();
   const [Password, setPassword] = useState();
 
@@ -16,19 +17,6 @@ function Login() {
   const onPasswordHandler = (event) => {
     setPassword(event.currentTarget.value);
   };
-
-  useEffect(
-    () => {
-      axios
-        .get('http://localhost:3002/user_inform/userInfo')
-        .then((res) => {
-          console.log(res);
-        })
-        .catch();
-    },
-    // 페이지 호출 후 처음 한번만 호출될 수 있도록 [] 추가
-    []
-  );
 
   const onSubmitHandler = (event) => {
     // 버튼만 누르면 리로드 되는것을 막아줌
@@ -46,7 +34,7 @@ function Login() {
         console.log(res);
         console.log(res.data);
         console.log('res.data.id :: ', res.data.id);
-        console.log('res.data.msg :: ', res.data.msa);
+        console.log('res.data.userName :: ', res.data.userName);
         if (res.data.id === undefined) {
           // id 일치하지 않는 경우 userId = undefined, msg = '입력하신 id 가 일치하지 않습니다.'
           console.log('======================', res.data.msg);
@@ -54,7 +42,9 @@ function Login() {
         } else if (res.data.id === ID) {
           // id, pw 모두 일치 userId = userId1, msg = undefined
           console.log('======================', '로그인 성공');
-          sessionStorage.setItem('user_id', ID);
+          sessionStorage.setItem('user_id', res.data.user_id);
+          sessionStorage.setItem('id', res.data.id);
+          sessionStorage.setItem('userName', res.data.userName);
           alert('로그인에 성공했습니다.');
           navigate('/');
           window.location.replace('/');
@@ -67,20 +57,7 @@ function Login() {
 
   return (
     <div className="main">
-      <header className={styles.header}>
-        <Link to="/" className={styles.home_logo}>
-          커뮤니티
-        </Link>
-        <div className={styles.member_button}>
-          <button type="button" className={styles.login}>
-            <Link to="/login">로그인</Link>
-          </button>
-          <button type="button" className={styles.registration}>
-            <Link to="/registration">회원가입</Link>
-          </button>
-        </div>
-      </header>
-      <hr />
+      <Header isLogin={isLogin} />
       <section className={styles.container}>
         <span>로그인</span>
         <div className={styles.login_container}>

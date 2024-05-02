@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Home.module.css';
 import Header from './Header';
+import axios from 'axios';
 
 function Home({ isLogin }) {
   const [postList, setPostList] = useState([
@@ -27,13 +28,36 @@ function Home({ isLogin }) {
       comment: 15,
     },
   ]);
+  // const [users, setUsers] = useState([]);
+  // useEffect(() => {
+  //   axios
+  //     .get('http://localhost:3002/user_inform/userInfo')
+  //     .then((res) => {
+  //       console.log('res.data: ' + res.data);
+  //       setUsers(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
 
   return (
     <div className="main">
       <Header isLogin={isLogin} />
       <section className={styles.container}>
         <div className={styles.table_container}>
-          <span>12개의 글</span>
+          <div className={styles.top_bar}>
+            <span>12개의 글</span>
+            {isLogin ? (
+              <div className={styles.write_post}>
+                <Link to="/write" className={styles.write_post_btn}>
+                  글쓰기
+                </Link>
+              </div>
+            ) : (
+              ''
+            )}
+          </div>
           <table>
             <thead className={styles.thead}>
               <tr>

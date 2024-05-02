@@ -3,8 +3,9 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Registration.module.css';
 import axios from 'axios';
+import Header from './Header';
 
-function Registration() {
+function Registration({ isLogin }) {
   const [Password, setPassword] = useState('');
 
   const {
@@ -43,20 +44,7 @@ function Registration() {
 
   return (
     <div className="main">
-      <header className={styles.header}>
-        <Link to="/" className={styles.home_logo}>
-          커뮤니티
-        </Link>
-        <div className={styles.member_button}>
-          <button type="button" className={styles.login}>
-            <Link to="/login">로그인</Link>
-          </button>
-          <button type="button" className={styles.registration}>
-            <Link to="/registration">회원가입</Link>
-          </button>
-        </div>
-      </header>
-      <hr />
+      <Header isLogin={isLogin} />
       <section className={styles.container}>
         <span>회원가입</span>
         <div className={styles.registration_container}>
