@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(500),
       allowNull: false,
     },
-    date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
   });
 
   Board.associate = (models) => {

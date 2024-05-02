@@ -22,6 +22,8 @@ const registrationRouter = require('./routes/Registration');
 app.use('/registration', registrationRouter); //라우터에 미들웨어 적용
 const user_inform = require('./routes/User_inform');
 app.use('/user_inform', user_inform);
+const board = require('./routes/Board');
+app.use('/board', board);
 
 db.sequelize.sync().then(() => {
   app.listen(3002, () => {
