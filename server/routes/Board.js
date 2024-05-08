@@ -10,6 +10,7 @@ router.post('/write', async (req, res) => {
   res.json(write_board);
 });
 
+//board 전체 DB 가져오기
 router.get('/boardList', async (req, res) => {
   await Board.findAll({
     include: [
@@ -23,7 +24,9 @@ router.get('/boardList', async (req, res) => {
   });
 });
 
+//하나의 board DB 가져오기
 router.get('/boardDetail/:boardId', async (req, res) => {
+  //board_id나 id 둘 중 하나 수정하기
   let board_id = Number(req.params.boardId);
   console.log('--type: ' + typeof board_id);
   console.log('---id before---: ' + board_id);
@@ -41,27 +44,27 @@ router.get('/boardDetail/:boardId', async (req, res) => {
     ],
   }).then((boardData) => {
     res.json(boardData);
-    //console.log('boardData: ' + JSON.stringify(boardData));
   });
 });
-// router.get('/commentCount', async (req, res) => {
-//   await Comment.findAll({
-//     // where: {
-//     //   id: parseInt(req.params.id, 10) || (req.user && req.user.id) || 0,
-//     // },
-//     attributes: [[sequelize.fn('COUNT', 'comment_id'), 'commentCount']],
-//     // include: [
-//     //   {
-//     //     model: db.User,
-//     //     as: 'Comments',
-//     //     attributes: [[sequelize.fn('COUNT', 'comment_id'), 'commentCount']],
-//     //   },
-//     // ],
-//   }).then((commentCount) => {
-//     res.json(commentCount);
-//   });
-// });
 
-router.get('/user_board', async (req, res) => {});
+//특정 사용자가 작성한 글 DB 가져오기
+router.get('/userBoardList/:userId', async (req, res) => {
+  const user_id = Number(req.params.userId);
+  console.log('--userID type--' + typeof user_id);
+  console.log('--userId--' + user_id);
+  await Board.findAll({
+    where: {
+      user_id: user_id,
+    },
+    include: [
+      {
+        model: Member,
+        attributes: ['userName'],
+      },
+    ],
+  }).then((userBoardList) => {
+    res.json(userBoardList);
+  });
+});
 
 module.exports = router;
