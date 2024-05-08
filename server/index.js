@@ -24,6 +24,8 @@ const user_inform = require('./routes/User_inform');
 app.use('/user_inform', user_inform);
 const board = require('./routes/Board');
 app.use('/board', board);
+const comment = require('./routes/Comment');
+app.use('/comment', comment);
 
 db.sequelize.sync().then(() => {
   app.listen(3002, () => {

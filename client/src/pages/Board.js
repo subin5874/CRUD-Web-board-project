@@ -19,9 +19,9 @@ function Board({ isLogin }) {
 
         console.log('post: ' + JSON.stringify(post));
         setPostData(post);
-        if (postData.Member.userName) {
-          console.log('postData: ' + JSON.stringify(postData.Member.userName));
-        }
+        //if (postData.Member.userName) {
+        // console.log('postData: ' + JSON.stringify(postData.Member.userName));
+        //}
       })
       .catch((err) => {
         console.log(err);
@@ -33,17 +33,45 @@ function Board({ isLogin }) {
   const [comment, setComment] = useState();
 
   const onCommentHandler = (event) => {
+    event.preventDefault();
     setComment(event.currentTarget.value);
-    console.log(comment);
   };
 
-  const [commentList, setCommentList] = useState([
-    {
-      writer: '덕소 요정',
-      comment: '제주도 근처 공항에 있는 고기국수 추천',
-      date: '2013.04.03',
-    },
-  ]);
+  const submitForm = (event) => {
+    // 버튼만 누르면 리로드 되는것을 막아줌
+    event.preventDefault();
+    console.log(comment);
+
+    axios
+      .post('http://localhost:3002/comment/write', {
+        comment: comment,
+        board_id: postData.board_id,
+        user_id: sessionStorage.getItem('user_id'),
+      })
+      .then((res) => {
+        console.log(res);
+        window.alert('댓글을 성공적으로 작성하였습니다.');
+      })
+      .catch((err) => {
+        console.log(err);
+        window.alert('댓글 작성이 정상적으로 되지 않았습니다.');
+      });
+  };
+
+  const [commentList, setCommentList] = useState('');
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3002/comment/commentList/' + boardId)
+      .then((res) => {
+        const comments = res.data;
+        console.log('--comment--' + JSON.stringify(comments));
+        setCommentList(comments);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div className="main">
@@ -90,21 +118,24 @@ function Board({ isLogin }) {
         </div>
         <div className={styles.board_comment}>
           <span>댓글</span>
-          {commentList.map((data, i) => {
-            return (
-              <div className={styles.comment_container}>
-                <span className={styles.comment_writer}>{data.writer}</span>
-                <span className={styles.comment}>{data.comment}</span>
-                <span className={styles.comment_date}>{data.date}</span>
-              </div>
-            );
-          })}
+          {commentList &&
+            commentList.map((data, i) => {
+              return (
+                <div className={styles.comment_container}>
+                  <span className={styles.comment_writer}>
+                    {data.Member.userName}
+                  </span>
+                  <span className={styles.comment}>{data.comment}</span>
+                  <span className={styles.comment_date}>{data.createdAt}</span>
+                </div>
+              );
+            })}
           {isLogin ? (
-            <form className={styles.comment_form}>
+            <form onSubmit={submitForm} className={styles.comment_form}>
               <input
                 type="text"
                 placeholder="댓글을 작성해주세요."
-                value={comment}
+                value={comment || ''}
                 onChange={onCommentHandler}
               />
               <button type="submit" className={styles.comment_submitb}>
