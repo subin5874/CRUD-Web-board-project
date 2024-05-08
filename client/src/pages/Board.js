@@ -1,25 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import styles from './Board.module.css';
 import Header from './Header';
+import axios from 'axios';
 
 function Board({ isLogin }) {
+  const { boardId } = useParams();
+  console.log('--board_Id--' + boardId);
+  const [postData, setPostData] = useState('');
+  useEffect(() => {
+    axios
+      .get('http://localhost:3002/board/boardDetail/' + boardId)
+      .then((res) => {
+        console.log('res.data: ' + res.data);
+
+        let post = res.data;
+
+        console.log('post: ' + JSON.stringify(post));
+        setPostData(post);
+        if (postData.Member.userName) {
+          console.log('postData: ' + JSON.stringify(postData.Member.userName));
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   const [likeState, setLikeState] = useState(0);
   let [likeSum, setLikeSum] = useState(10);
+
   const [comment, setComment] = useState();
+
   const onCommentHandler = (event) => {
     setComment(event.currentTarget.value);
+    console.log(comment);
   };
 
   const [commentList, setCommentList] = useState([
     {
       writer: '덕소 요정',
       comment: '제주도 근처 공항에 있는 고기국수 추천',
-      date: '2013.04.03',
-    },
-    {
-      writer: '겨울 개구리',
-      comment: '우진해장국 아시나요? 웨이팅은 긴데 맛나요.',
       date: '2013.04.03',
     },
   ]);
@@ -30,16 +51,14 @@ function Board({ isLogin }) {
       <section className={styles.container}>
         <span>게시글</span>
         <div className={styles.board_header}>
-          <span>제주도 맛집 추천 부탁</span>
+          <span>{postData.title}</span>
           <div className={styles.board_data}>
-            <span>북극곰 눈물</span>
-            <span>2024.03.22</span>
+            <span>postData.Member.userName</span>
+            <span>{postData.createdAt}</span>
           </div>
         </div>
         <div className={styles.board_content}>
-          <span>
-            다음주에 제주도 여행을 가게 되었습니당. 맛집 많이 추천 해주세용.
-          </span>
+          <span>{postData.content}</span>
         </div>
         <div className={styles.board_box}>
           <div className={styles.like_article}>
@@ -47,9 +66,9 @@ function Board({ isLogin }) {
               className={styles.like_icon}
               onClick={() => {
                 setLikeState(!likeState);
-                if (likeState == 0) {
+                if (likeState === 0) {
                   likeSum -= 1;
-                } else if (likeState == 1) {
+                } else if (likeState === 1) {
                   likeSum += 1;
                 }
               }}
@@ -80,17 +99,25 @@ function Board({ isLogin }) {
               </div>
             );
           })}
-          <form className={styles.comment_form}>
-            <input
-              type="text"
-              placeholder="댓글을 작성해주세요."
-              value={comment}
-              onChange={onCommentHandler}
-            />
-            <button type="submit" className={styles.comment_submitb}>
-              등록
-            </button>
-          </form>
+          {isLogin ? (
+            <form className={styles.comment_form}>
+              <input
+                type="text"
+                placeholder="댓글을 작성해주세요."
+                value={comment}
+                onChange={onCommentHandler}
+              />
+              <button type="submit" className={styles.comment_submitb}>
+                등록
+              </button>
+            </form>
+          ) : (
+            <div className={styles.disable_comment}>
+              <Link to="/login" className={styles.disable_message}>
+                로그인하고 댓글을 작성하세요.
+              </Link>
+            </div>
+          )}
         </div>
       </section>
     </div>

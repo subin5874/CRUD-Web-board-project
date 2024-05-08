@@ -42,7 +42,11 @@ function App() {
             exact
             element={<CheckPass isLogin={isLogin} />}
           />
-          <Route path="/board" exact element={<Board isLogin={isLogin} />} />
+          <Route
+            path="/post/:boardId"
+            exact
+            element={<Board isLogin={isLogin} />}
+          />
           <Route path="/mypage" exact element={<Mypage isLogin={isLogin} />} />
           <Route path="/write" exact element={<Write isLogin={isLogin} />} />
         </Routes>
