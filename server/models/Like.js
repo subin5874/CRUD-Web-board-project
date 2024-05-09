@@ -12,12 +12,15 @@ module.exports = (sequelize, DataTypes) => {
     Like.belongsTo(models.Member, {
       foreignKey: 'user_id',
       sourceKey: 'user_id',
-      onDelete: 'CASCADE',
+      onDelete: 'cascade',
+      hooks: true,
     });
+
     Like.belongsTo(models.Board, {
       foreignKey: 'board_id',
       sourceKey: 'board_id',
-      onDelete: 'CASCADE',
+      onDelete: 'cascade',
+      hooks: true,
     });
   };
 

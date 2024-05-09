@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
     },
     title: {
-      type: DataTypes.STRING(100),
+      type: DataTypes.STRING(200),
       allowNull: false,
     },
     content: {
@@ -17,20 +17,19 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Board.associate = (models) => {
-    Board.hasMany(models.Like, {
-      foreignKey: 'board_id',
-    });
     Board.hasMany(models.Comment, {
       foreignKey: 'board_id',
+      onDelete: 'cascade',
     });
-
-    //1:N
-    //Member테이블에서 user_num을 외래키로 받아온다
-    //CASECADE로 Member의 user_num아 수정/삭제되면 같이 변하도록 함
+    Board.hasMany(models.Like, {
+      foreignKey: 'board_id',
+      onDelete: 'cascade',
+    });
     Board.belongsTo(models.Member, {
       foreignKey: 'user_id',
       sourceKey: 'user_id',
-      onDelete: 'CASCADE',
+      onDelete: 'cascade',
+      hooks: true,
     });
   };
 

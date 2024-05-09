@@ -10,22 +10,20 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(200),
       allowNull: false,
     },
-    date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
   });
 
   Comment.associate = (models) => {
     Comment.belongsTo(models.Member, {
       foreignKey: 'user_id',
       sourceKey: 'user_id',
-      onDelete: 'CASCADE',
+      onDelete: 'cascade',
+      hooks: true,
     });
     Comment.belongsTo(models.Board, {
       foreignKey: 'board_id',
       sourceKey: 'board_id',
-      onDelete: 'CASCADE',
+      onDelete: 'cascade',
+      hooks: true,
     });
   };
 

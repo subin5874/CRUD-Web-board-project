@@ -23,17 +23,20 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Member.associate = (models) => {
-    //Board테이블에 외래키로 user_num을 준다
+    //Board테이블에 외래키로 user_id을 준다
     Member.hasMany(models.Board, {
       foreignKey: 'user_id',
+      onDelete: 'cascade',
     });
     //Like 1:1
     Member.hasOne(models.Like, {
       foreignKey: 'user_id',
+      onDelete: 'cascade',
     });
     //Comment 1:N
     Member.hasMany(models.Comment, {
       foreignKey: 'user_id',
+      onDelete: 'cascade',
     });
   };
 
