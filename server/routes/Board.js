@@ -19,6 +19,7 @@ router.get('/boardList', async (req, res) => {
         attributes: ['userName'],
       },
     ],
+    order: [['board_id', 'desc']],
   }).then((board) => {
     res.json(board);
   });
@@ -62,8 +63,34 @@ router.get('/userBoardList/:userId', async (req, res) => {
         attributes: ['userName'],
       },
     ],
+    order: [['board_id', 'desc']],
   }).then((userBoardList) => {
     res.json(userBoardList);
+  });
+});
+
+//글 수정하기
+router.post('/updateBoard/:boardId', async (req, res) => {
+  const board_id = Number(req.params.boardId);
+  const board_data = req.body;
+  await Board.update(
+    { title: board_data.title, content: board_data.content },
+    {
+      where: {
+        board_id: board_id,
+      },
+    }
+  );
+  res.json(board_data);
+});
+
+//글 삭제하기
+router.post('/deleteBoard/:boardId', async (req, res) => {
+  const board_id = Number(req.params.boardId);
+  await Board.destroy({
+    where: {
+      board_id: board_id,
+    },
   });
 });
 
