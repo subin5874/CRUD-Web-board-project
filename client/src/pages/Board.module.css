@@ -78,6 +78,20 @@
   font-weight: bolder;
 }
 
+.right_article {
+  margin-left: auto;
+}
+
+.userbtn {
+  background-color: #fff;
+  border-radius: 10px;
+  width: 55px;
+  height: 32px;
+  font-size: 15px;
+  border: 1px solid #d9d9d9;
+  margin-left: 6px;
+}
+
 .board_comment {
   margin-top: 10px;
   border-top: 1px solid #808080;
@@ -112,6 +126,14 @@
 .comment_date {
   font-size: 18px;
   color: #999999;
+}
+
+.comment_bottom_article {
+  display: flex;
+}
+
+.comment_right_article {
+  margin-left: auto;
 }
 
 .comment_form > input {

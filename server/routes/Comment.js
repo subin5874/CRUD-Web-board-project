@@ -24,6 +24,7 @@ router.get('/commentList/:boardId', async (req, res) => {
         attributes: ['userName'],
       },
     ],
+    order: [['comment_id', 'desc']],
   }).then((CommentData) => {
     res.json(CommentData);
   });
@@ -46,8 +47,44 @@ router.get('/userCommentList/:userId', async (req, res) => {
         attributes: ['title'],
       },
     ],
+    order: [['comment_id', 'desc']],
   }).then((userCommentList) => {
     res.json(userCommentList);
+  });
+});
+
+//댓글 삭제
+router.post('/deleteComment/:commentId', async (req, res) => {
+  const comment_id = Number(req.params.commentId);
+  await Comment.destroy({
+    where: {
+      comment_id: comment_id,
+    },
+  });
+});
+
+//전체 댓글 수 가져오기
+router.get('/commentCount', async (req, res) => {
+  await Comment.findAll({
+    attributes: [
+      'board_id',
+      [sequelize.fn('count', sequelize.col('board_id')), 'commentcount'],
+    ],
+    group: ['board_id'],
+  }).then((boardCommentCount) => {
+    res.json(boardCommentCount);
+  });
+});
+
+//해당 글의 댓글 수 가져오기
+router.get('/commentCount/:boardId', async (req, res) => {
+  const board_id = Number(req.params.boardId);
+  await Comment.count({
+    where: {
+      board_id: board_id,
+    },
+  }).then((boardCommentCount) => {
+    res.json(boardCommentCount);
   });
 });
 

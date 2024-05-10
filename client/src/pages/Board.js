@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styles from './Board.module.css';
 import Header from './Header';
 import axios from 'axios';
 
 function Board({ isLogin }) {
   const { boardId } = useParams();
-  console.log('--board_Id--' + boardId);
+  const navigate = useNavigate();
   const [postData, setPostData] = useState('');
   useEffect(() => {
     axios
@@ -19,16 +19,42 @@ function Board({ isLogin }) {
 
         console.log('post: ' + JSON.stringify(post));
         setPostData(post);
-        //if (postData.Member.userName) {
-        // console.log('postData: ' + JSON.stringify(postData.Member.userName));
-        //}
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-  const [likeState, setLikeState] = useState(0);
-  let [likeSum, setLikeSum] = useState(10);
+
+  const [commentList, setCommentList] = useState('');
+
+  //댓글 가져오기
+  useEffect(() => {
+    axios
+      .get('http://localhost:3002/comment/commentList/' + boardId)
+      .then((res) => {
+        const comments = res.data.reverse();
+        console.log('--comment--' + JSON.stringify(comments));
+        setCommentList(comments);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const [commentCount, setCommentCount] = useState(0);
+
+  //댓글 수 가져오기
+  useEffect(() => {
+    axios
+      .get('http://localhost:3002/comment/commentCount/' + boardId)
+      .then((res) => {
+        console.log('--likeCount--' + JSON.stringify(res));
+        setCommentCount(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   const [comment, setComment] = useState();
 
@@ -38,7 +64,6 @@ function Board({ isLogin }) {
   };
 
   const submitForm = (event) => {
-    // 버튼만 누르면 리로드 되는것을 막아줌
     event.preventDefault();
     console.log(comment);
 
@@ -50,7 +75,7 @@ function Board({ isLogin }) {
       })
       .then((res) => {
         console.log(res);
-        window.alert('댓글을 성공적으로 작성하였습니다.');
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err);
@@ -58,20 +83,122 @@ function Board({ isLogin }) {
       });
   };
 
-  const [commentList, setCommentList] = useState('');
+  const userId = sessionStorage.getItem('user_id');
+
+  const onUpdateBoardBtn = (evernt) => {
+    navigate('/updateBoard/' + boardId);
+  };
+  const onDeleteBoardBtn = (evernt) => {
+    if (window.confirm('글을 삭제하시겠습니까?') == true) {
+      //확인
+      axios
+        .post('http://localhost:3002/board/deleteBoard/' + boardId)
+        .then((res) => {
+          window.alert('글을 성공적으로 삭제했습니다.');
+        })
+        .catch((err) => {
+          console.log(err);
+          window.alert('글이 정상적으로 삭제되지 않았습니다.');
+        });
+    } else {
+      //취소
+      return false;
+    }
+  };
+
+  const onDeleteCommentBtn = (event) => {
+    console.log(event.currentTarget.value);
+    const commentId = event.currentTarget.value;
+
+    if (window.confirm('댓글을 삭제하시겠습니까?') == true) {
+      //확인
+      axios
+        .post('http://localhost:3002/comment/deleteComment/' + commentId)
+        .then((res) => {
+          window.alert('댓글을 성공적으로 삭제했습니다.');
+          window.location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+          window.alert('댓글이 정상적으로 삭제되지 않았습니다.');
+        });
+    } else {
+      //취소
+      return false;
+    }
+  };
+
+  const [likeState, setLikeState] = useState(false);
+  let [likeCount, setLikeCount] = useState(1);
 
   useEffect(() => {
+    //로그인한 사용자의 해당 글 좋아요 여부 가져오기
     axios
-      .get('http://localhost:3002/comment/commentList/' + boardId)
+      .get('http://localhost:3002/like/likeState/' + boardId + '/' + userId)
       .then((res) => {
-        const comments = res.data;
-        console.log('--comment--' + JSON.stringify(comments));
-        setCommentList(comments);
+        console.log('--like--' + JSON.stringify(res));
+        if (res.data == null) {
+          setLikeState(false);
+          console.log('좋아요 상태: ' + likeState);
+        } else {
+          setLikeState(true);
+          console.log('좋아요 상태: ' + likeState);
+        }
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    //해당 글의 전체 좋아요 수 가져오기
+    axios
+      .get('http://localhost:3002/like/likeCount/' + boardId)
+      .then((res) => {
+        console.log('--likeCount--' + JSON.stringify(res));
+        setLikeCount(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const onClickLogin = () => {
+    //로그인 여부 물어보는 걸로 바꾸기!!!
+    window.alert('로그인후 이용 가ㅡㅇㄹ');
+  };
+
+  const onClickLike = () => {
+    setLikeState(!likeState);
+    console.log('좋아요 상태: ' + likeState);
+    if (likeState == false) {
+      //좋아요 db 생성
+      axios
+        .post('http://localhost:3002/like/addLike', {
+          board_id: boardId,
+          user_id: userId,
+        })
+        .then((res) => {
+          console.log('좋아요 추가 완료');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      //좋아요 db 삭제
+      axios
+        .post('http://localhost:3002/like/deleteLike', {
+          board_id: boardId,
+          user_id: userId,
+        })
+        .then((res) => {
+          console.log('좋아요 제거 완료');
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
 
   return (
     <div className="main">
@@ -90,31 +217,43 @@ function Board({ isLogin }) {
         </div>
         <div className={styles.board_box}>
           <div className={styles.like_article}>
-            <div
-              className={styles.like_icon}
-              onClick={() => {
-                setLikeState(!likeState);
-                if (likeState === 0) {
-                  likeSum -= 1;
-                } else if (likeState === 1) {
-                  likeSum += 1;
-                }
-              }}
-            >
-              {!likeState ? (
+            {isLogin ? (
+              <div className={styles.like_icon} onClick={onClickLike}>
+                {likeState ? (
+                  <img
+                    src="/assets/Board/icon-heart-full.png"
+                    alt="채워진하트"
+                  />
+                ) : (
+                  <img src="/assets/Board/icon-heart.png" alt="하트" />
+                )}
+              </div>
+            ) : (
+              <div className={styles.like_icon} onClick={onClickLogin}>
                 <img src="/assets/Board/icon-heart.png" alt="하트" />
-              ) : (
-                <img src="/assets/Board/icon-heart-full.png" alt="하트" />
-              )}
-            </div>
+              </div>
+            )}
+
             <span>좋아요</span>
-            <span className={styles.like_sum}>{likeSum}</span>
+            <span className={styles.like_sum}>{likeCount}</span>
           </div>
           <div className={styles.comment_article}>
             <img src="/assets/Board/icon-chat.png" alt="댓글" />
             <span>댓글</span>
-            <span className={styles.comment_sum}>3</span>
+            <span className={styles.comment_sum}>{commentCount}</span>
           </div>
+          {userId == postData.user_id ? (
+            <div className={styles.right_article}>
+              <button onClick={onUpdateBoardBtn} className={styles.userbtn}>
+                수정
+              </button>
+              <button onClick={onDeleteBoardBtn} className={styles.userbtn}>
+                삭제
+              </button>
+            </div>
+          ) : (
+            ''
+          )}
         </div>
         <div className={styles.board_comment}>
           <span>댓글</span>
@@ -126,7 +265,24 @@ function Board({ isLogin }) {
                     {data.Member.userName}
                   </span>
                   <span className={styles.comment}>{data.comment}</span>
-                  <span className={styles.comment_date}>{data.createdAt}</span>
+                  <div className={styles.comment_bottom_article}>
+                    <span className={styles.comment_date}>
+                      {data.createdAt}
+                    </span>
+                    {userId == data.user_id ? (
+                      <div className={styles.comment_right_article}>
+                        <button
+                          value={data.comment_id}
+                          onClick={onDeleteCommentBtn}
+                          className={styles.userbtn}
+                        >
+                          삭제
+                        </button>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                  </div>
                 </div>
               );
             })}
