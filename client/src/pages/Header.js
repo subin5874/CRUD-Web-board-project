@@ -1,13 +1,20 @@
 import React from 'react';
 import styles from './Header.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useMatch } from 'react-router-dom';
 
 function Header({ isLogin }) {
+  const navigate = useNavigate();
+  const isMatchPath = useMatch('/mypage');
   const onLogout = () => {
     // sessionStorage 에 user_id 로 저장되어있는 아이템을 삭제한다.
     sessionStorage.removeItem('user_id');
-    // App 으로 이동(새로고침)
-    document.location.href = '/';
+
+    if (isMatchPath !== null) {
+      navigate('/');
+      window.location.reload();
+    } else {
+      window.location.reload();
+    }
   };
   return (
     <div>

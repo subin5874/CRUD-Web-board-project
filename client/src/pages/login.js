@@ -46,8 +46,8 @@ function Login({ isLogin }) {
           sessionStorage.setItem('id', res.data.id);
           sessionStorage.setItem('userName', res.data.userName);
           alert('로그인에 성공했습니다.');
-          navigate('/');
-          window.location.replace('/');
+          navigate(-1);
+          //window.location.reload();
         }
       })
       .catch((err) => {
