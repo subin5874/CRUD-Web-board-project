@@ -8,6 +8,8 @@ import CheckPass from './pages/CheckPass';
 import Board from './pages/Board';
 import Mypage from './pages/Mypage';
 import Write from './pages/Write';
+import UpdateBoard from './pages/UpdateBoard';
+import ChangeUserInfo from './pages/ChangeUserInfo';
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -49,6 +51,16 @@ function App() {
           />
           <Route path="/mypage" exact element={<Mypage isLogin={isLogin} />} />
           <Route path="/write" exact element={<Write isLogin={isLogin} />} />
+          <Route
+            path="/updateBoard/:boardId"
+            exact
+            element={<UpdateBoard isLogin={isLogin} />}
+          />
+          <Route
+            path="/changeUserInfo"
+            exact
+            element={<ChangeUserInfo isLogin={isLogin} />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

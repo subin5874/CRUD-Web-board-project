@@ -7,15 +7,12 @@ import LikeList from './Mypage_component/LikeList';
 import Header from './Header';
 
 function Mypage({ isLogin }) {
-  console.log(sessionStorage.getItem('id'));
   console.log(sessionStorage.data);
   const [userInfo, setUserInfo] = useState({
     id: sessionStorage.getItem('id'),
     user_id: sessionStorage.getItem('user_id'),
     userName: sessionStorage.getItem('userName'),
   });
-  console.log('user_id: ' + userInfo.user_id);
-  console.log('user_id: ' + userInfo.userName);
   const [category, setCategory] = useState('post');
   const [content, setContent] = useState('post');
   const categories = [
@@ -34,6 +31,10 @@ function Mypage({ isLogin }) {
     comment: <CommentList />,
     like: <LikeList />,
   };
+
+  useEffect(() => {
+    console.log(sessionStorage);
+  });
 
   return (
     <div className="main">

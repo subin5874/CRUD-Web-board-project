@@ -1,36 +1,47 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './CheckPass.module.css';
+import Header from './Header';
+import axios from 'axios';
 
-function CheckPass() {
+function CheckPass({ isLogin }) {
+  const navigate = useNavigate();
+
   const [Password, setPassword] = useState();
 
   const onPasswordHandler = (event) => {
+    console.log(event.currentTarget.value);
     setPassword(event.currentTarget.value);
   };
 
+  const userId = sessionStorage.getItem('user_id');
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
-
     console.log(Password);
+
+    axios
+      .post('http://localhost:3002/user_inform/checkPass', {
+        password: Password,
+        user_id: userId,
+      })
+      .then((res) => {
+        if (res.data.id === undefined) {
+          window.alert('비밀번호가 일치하지 않습니다.');
+          window.location.reload();
+        } else if (res.data.password === Password) {
+          console.log('비밀번호 일치');
+          navigate('/changeUserInfo');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <div className="main">
-      <header className={styles.header}>
-        <Link to="/" className={styles.home_logo}>
-          커뮤니티
-        </Link>
-        <div className={styles.member_button}>
-          <button type="button" className={styles.login}>
-            <Link to="/login">로그인</Link>
-          </button>
-          <button type="button" className={styles.registration}>
-            <Link to="/registration">회원가입</Link>
-          </button>
-        </div>
-      </header>
-      <hr />
+      <Header isLogin={isLogin} />
       <section className={styles.container}>
         <div className={styles.ck_form}>
           <form onSubmit={onSubmitHandler}>
