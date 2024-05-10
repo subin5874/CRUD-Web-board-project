@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER(100),
       allowNull: false,
       primaryKey: true,
-      sutoIncrement: true,
+      autoIncrement: true,
     },
   });
 
