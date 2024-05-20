@@ -80,8 +80,9 @@ router.post('/updateBoard/:boardId', async (req, res) => {
         board_id: board_id,
       },
     }
-  );
-  res.json(board_data);
+  ).then((boardData) => {
+    res.json(boardData);
+  });
 });
 
 //글 삭제하기

@@ -61,6 +61,16 @@ table {
   color: black;
 }
 
+.commentCount_box {
+  display: inline-block;
+}
+
+.comment_num {
+  margin-left: 5px;
+  color: #ff2f3b;
+  font-size: 22px;
+}
+
 .tbody > tr > td {
   height: 60px;
   border-bottom: 1px solid #d2d2d2;
@@ -69,9 +79,4 @@ table {
 .thead > tr > th {
   font-size: 22px;
   font-weight: normal;
-}
-
-.comment_num {
-  margin-left: 5px;
-  color: #ff2f3b;
 }

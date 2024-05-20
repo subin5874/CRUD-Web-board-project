@@ -65,12 +65,22 @@ router.post('/deleteComment/:commentId', async (req, res) => {
 
 //전체 댓글 수 가져오기
 router.get('/commentCount', async (req, res) => {
-  await Comment.findAll({
+  await Board.findAll({
     attributes: [
       'board_id',
-      [sequelize.fn('count', sequelize.col('board_id')), 'commentcount'],
+      [
+        sequelize.fn('COUNT', sequelize.col('comments.comment_id')),
+        'commentCount',
+      ],
     ],
-    group: ['board_id'],
+    include: [
+      {
+        model: Comment,
+        attributes: [],
+      },
+    ],
+    group: ['Board.board_id'],
+    order: [['board_id', 'desc']],
   }).then((boardCommentCount) => {
     res.json(boardCommentCount);
   });
