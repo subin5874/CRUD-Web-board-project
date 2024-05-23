@@ -21,6 +21,8 @@ function Home({ isLogin }) {
       });
   }, []);
 
+  const postCount = postList.length;
+
   const [likeCount, setLikeCount] = useState(0);
   useEffect(() => {
     //전체 글의  좋아요 수 가져오기
@@ -102,7 +104,7 @@ function Home({ isLogin }) {
       <section className={styles.container}>
         <div className={styles.table_container}>
           <div className={styles.top_bar}>
-            <span>12개의 글</span>
+            <span>{postCount}개의 글</span>
             {isLogin ? (
               <div className={styles.write_post}>
                 <Link to="/write" className={styles.write_post_btn}>
