@@ -34,16 +34,32 @@
   font-size: 24px;
 }
 
+.btn_box {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.write_cancel {
+  background-color: #f0f0f0;
+  width: 120px;
+  height: 60px;
+  border: none;
+  border-radius: 20px;
+  color: #151515;
+  text-align: center;
+  font-size: 24px;
+  margin-right: 20px;
+}
+
 .write_submitb {
   background-color: #4adb50;
-  width: 50%;
+  width: 120px;
   height: 60px;
   border: none;
   border-radius: 20px;
   color: #fff;
   text-align: center;
   font-size: 24px;
-  margin-left: 25%;
 }
 
 input:focus {

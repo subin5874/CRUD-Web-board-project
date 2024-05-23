@@ -60,6 +60,10 @@ function UpdateBoard({ isLogin }) {
       });
   };
 
+  const onConcelBtn = (evernt) => {
+    navigate(-1);
+  };
+
   return (
     <div className="main">
       <Header isLogin={isLogin} />
@@ -79,9 +83,14 @@ function UpdateBoard({ isLogin }) {
                 onChange={onContentHandler}
               />
             </div>
-            <button type="submit" className={styles.write_submitb}>
-              수정하기
-            </button>
+            <div className={styles.btn_box}>
+              <button className={styles.write_cancel} conClike={onConcelBtn}>
+                취소
+              </button>
+              <button type="submit" className={styles.write_submitb}>
+                수정
+              </button>
+            </div>
           </form>
         </div>
       </section>
