@@ -1,7 +1,7 @@
 const express = require('express');
 const sequelize = require('sequelize');
 const router = express.Router();
-const { Comment, Member, Board } = require('../models');
+const { Comment, Member, Board, Like } = require('../models');
 
 router.post('/write', async (req, res) => {
   const write_comment = req.body;
@@ -93,6 +93,67 @@ router.get('/commentCount/:boardId', async (req, res) => {
     where: {
       board_id: board_id,
     },
+  }).then((boardCommentCount) => {
+    res.json(boardCommentCount);
+  });
+});
+
+//사용자의 글 댓글 수 가져오기
+router.get('/myPost/commentCount/:userId', async (req, res) => {
+  const user_id = Number(req.params.userId);
+  console.log('-comment-id-' + user_id);
+  await Board.findAll({
+    attributes: [
+      'board_id',
+      [
+        sequelize.fn('COUNT', sequelize.col('comments.comment_id')),
+        'commentCount',
+      ],
+    ],
+    include: [
+      {
+        model: Comment,
+        attributes: [],
+      },
+    ],
+    where: {
+      user_id: user_id,
+    },
+    group: ['Board.board_id'],
+    order: [['board_id', 'desc']],
+  }).then((boardCommentCount) => {
+    res.json(boardCommentCount);
+  });
+});
+
+//사용자가 좋아요한 글의 댓글 수
+router.get('/myPostLike/commentCount/:userId', async (req, res) => {
+  const user_id = Number(req.params.userId);
+  console.log('-comment-id-' + user_id);
+  await Board.findAll({
+    attributes: [
+      'board_id',
+      [
+        sequelize.fn('COUNT', sequelize.col('comments.comment_id')),
+        'commentCount',
+      ],
+    ],
+    include: [
+      {
+        model: Comment,
+        attributes: [],
+      },
+      {
+        model: Like,
+        attributes: [],
+        where: {
+          user_id: user_id,
+        },
+        required: true,
+      },
+    ],
+    group: ['Board.board_id'],
+    order: [['board_id', 'desc']],
   }).then((boardCommentCount) => {
     res.json(boardCommentCount);
   });

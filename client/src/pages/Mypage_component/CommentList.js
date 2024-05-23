@@ -2,23 +2,45 @@ import React from 'react';
 import styles from './CommentList.module.css';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 import axios from 'axios';
+import PostList from './PostList';
 
 function CommentList() {
-  const [commentData, setCommentData] = useState('');
+  const [commentData, setCommentData] = useState([]);
   const userId = sessionStorage.getItem('user_id');
   useEffect(() => {
     axios
       .get('http://localhost:3002/comment/userCommentList/' + userId)
       .then((res) => {
         const userCommentList = res.data;
+        console.log(JSON.stringify(userCommentList));
         setCommentData(userCommentList);
-        console.log('--commentList--' + JSON.stringify(userCommentList));
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  useEffect(() => {
+    console.log(JSON.stringify(commentData));
+  }, [commentData]);
+
+  const [updatedList, setUpdateList] = useState([]);
+  useEffect(() => {
+    const updatedList = commentData.map((post) => {
+      const formattedDate = format(
+        new Date(post.createdAt),
+        'yyyy.MM.dd HH:mm'
+      );
+      return {
+        ...post,
+        createdAt: formattedDate,
+      };
+    });
+    setUpdateList(updatedList);
+  }, [commentData]);
+
   return (
     <table>
       <thead className={styles.thead}>
@@ -27,8 +49,8 @@ function CommentList() {
         </tr>
       </thead>
       <tbody className={styles.tbody}>
-        {commentData &&
-          commentData.map((data, i) => {
+        {updatedList &&
+          updatedList.map((data, i) => {
             return (
               <tr>
                 <td>
@@ -41,11 +63,10 @@ function CommentList() {
                         <span>{data.comment}</span>
                       </div>
                       <div className={styles.comment_date}>
-                        <span>{data.date}</span>
+                        <span>{data.createdAt}</span>
                       </div>
                       <div className={styles.board_title}>
                         <span className={styles.title}>{data.Board.title}</span>
-                        <span className={styles.comment_num}>[2]</span>
                       </div>
                     </Link>
                   </div>

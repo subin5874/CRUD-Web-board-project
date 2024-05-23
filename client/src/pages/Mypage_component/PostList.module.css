@@ -46,7 +46,12 @@ table {
   font-weight: normal;
 }
 
+.commentCount_box {
+  display: inline-block;
+}
+
 .comment_num {
   margin-left: 5px;
   color: #ff2f3b;
+  font-size: 22px;
 }

@@ -1,7 +1,7 @@
 const express = require('express');
 const sequelize = require('sequelize');
 const router = express.Router();
-const { Like, Member, Board } = require('../models');
+const { Like, Member, Board, Comment } = require('../models');
 
 router.post('/addLike', async (req, res) => {
   const like_data = req.body;
@@ -35,31 +35,7 @@ router.get('/likeState/:boardId/:userId', async (req, res) => {
   });
 });
 
-//특정 글의 좋아요수
-router.get('/likeCount/:boardId', async (req, res) => {
-  const board_id = Number(req.params.boardId);
-  await Like.count({
-    where: {
-      board_id: board_id,
-    },
-  }).then((boardLikeCount) => {
-    res.json(boardLikeCount);
-  });
-});
-
 //전체 글의 좋아요수
-// router.get('/likeCount', async (req, res) => {
-//   await Like.findAll({
-//     attributes: [
-//       'board_id',
-//       [sequelize.fn('count', sequelize.col('board_id')), 'likecount'],
-//     ],
-//     group: ['board_id'],
-//   }).then((boardLikeCount) => {
-//     res.json(boardLikeCount);
-//   });
-// });
-
 router.get('/likeCount', async (req, res) => {
   await Board.findAll({
     attributes: [
@@ -76,6 +52,81 @@ router.get('/likeCount', async (req, res) => {
     order: [['board_id', 'desc']],
   }).then((boardCommentCount) => {
     res.json(boardCommentCount);
+  });
+});
+
+//특정 글의 좋아요수
+router.get('/likeCount/:boardId', async (req, res) => {
+  const board_id = Number(req.params.boardId);
+  await Like.count({
+    where: {
+      board_id: board_id,
+    },
+  }).then((boardLikeCount) => {
+    res.json(boardLikeCount);
+  });
+});
+
+//사용자 글의 좋아요수
+router.get('/myPost/likeCount/:userId', async (req, res) => {
+  const user_id = Number(req.params.userId);
+  console.log('-Like-id-' + user_id);
+  await Board.findAll({
+    attributes: [
+      'board_id',
+      [sequelize.fn('COUNT', sequelize.col('likes.like_id')), 'likeCount'],
+    ],
+    include: [
+      {
+        model: Like,
+        attributes: [],
+      },
+    ],
+    where: {
+      user_id: user_id,
+    },
+    group: ['Board.board_id'],
+    order: [['board_id', 'desc']],
+  }).then((boardCommentCount) => {
+    res.json(boardCommentCount);
+  });
+});
+
+//사용자가 좋아요한 글의 좋아요 수
+router.get('/myPostLike/likeCount/:userId', async (req, res) => {
+  const user_id = Number(req.params.userId);
+  console.log('-Like-id-' + user_id);
+  await Board.findAll({
+    attributes: [
+      'board_id',
+      [sequelize.fn('COUNT', sequelize.col('likes.like_id')), 'likeCount'],
+    ],
+    include: [
+      {
+        model: Like,
+        attributes: [],
+        where: {
+          user_id: user_id,
+        },
+        required: true,
+      },
+    ],
+    group: ['Board.board_id'],
+    order: [['board_id', 'desc']],
+  }).then((boardCommentCount) => {
+    res.json(boardCommentCount);
+  });
+});
+
+//사용자가 좋아요 한 수
+router.get('/userLikeCount/:userId', async (req, res) => {
+  const user_id = Number(req.params.userId);
+  await Like.count({
+    where: {
+      user_id: user_id,
+    },
+  }).then((userLikeCount) => {
+    res.json(userLikeCount);
   });
 });
 
