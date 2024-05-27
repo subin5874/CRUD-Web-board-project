@@ -5,6 +5,7 @@ import PostList from './Mypage_component/PostList';
 import CommentList from './Mypage_component/CommentList';
 import LikeList from './Mypage_component/LikeList';
 import Header from './Header';
+import axios from 'axios';
 
 function Mypage({ isLogin }) {
   console.log(sessionStorage.data);
@@ -13,6 +14,36 @@ function Mypage({ isLogin }) {
     user_id: sessionStorage.getItem('user_id'),
     userName: sessionStorage.getItem('userName'),
   });
+
+  //작성한 글 수
+  const [postCount, setPostCount] = useState([]);
+  useEffect(() => {
+    axios
+      .get('http://localhost:3002/board/userPostCount/' + userInfo.user_id)
+      .then((res) => {
+        const postcount = res.data;
+        setPostCount(postcount);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  //좋아요 수
+  const [likeCount, setLikeCount] = useState([]);
+  useEffect(() => {
+    axios
+      .get('http://localhost:3002/like/userLikeCount/' + userInfo.user_id)
+      .then((res) => {
+        const likecount = res.data;
+        setLikeCount(likecount);
+        console.log('-likeccounef--' + likeCount);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
   const [category, setCategory] = useState('post');
   const [content, setContent] = useState('post');
   const categories = [
@@ -31,10 +62,6 @@ function Mypage({ isLogin }) {
     comment: <CommentList />,
     like: <LikeList />,
   };
-
-  useEffect(() => {
-    console.log(sessionStorage);
-  });
 
   return (
     <div className="main">
@@ -55,11 +82,11 @@ function Mypage({ isLogin }) {
             <div className={styles.user_state}>
               <div className={styles.user_post_data}>
                 <span>작성글</span>
-                <span>3</span>
+                <span>{postCount}</span>
               </div>
               <div className={styles.user_post_data}>
                 <span>좋아요</span>
-                <span>12</span>
+                <span>{likeCount}</span>
               </div>
             </div>
           </div>
