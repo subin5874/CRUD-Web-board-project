@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Login.module.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import Header from './Header';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Login({ isLogin }) {
   const [ID, setID] = useState();
   const [Password, setPassword] = useState();
 
+  const location = useLocation();
+  const gobackURL = location.state.pathname.pathname;
   const navigate = useNavigate();
 
   const onIDHandler = (event) => {
@@ -46,8 +47,13 @@ function Login({ isLogin }) {
           sessionStorage.setItem('id', res.data.id);
           sessionStorage.setItem('userName', res.data.userName);
           alert('로그인에 성공했습니다.');
-          navigate(-1);
-          //window.location.reload();
+          if (gobackURL == '/registration') {
+            navigate('/');
+            window.location.reload();
+          } else {
+            navigate(gobackURL);
+            window.location.reload();
+          }
         }
       })
       .catch((err) => {
@@ -57,9 +63,14 @@ function Login({ isLogin }) {
 
   return (
     <div className="main">
-      <Header isLogin={isLogin} />
       <section className={styles.container}>
-        <span>로그인</span>
+        <Link to="/" className={styles.goHomebtn}>
+          <img
+            className={styles.logo_img}
+            src="/assets/Logo/logo.png"
+            alt="로고"
+          />
+        </Link>
         <div className={styles.login_container}>
           <form onSubmit={onSubmitHandler} className={styles.login_form}>
             <article className={styles.login__items}>
