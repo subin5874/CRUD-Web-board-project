@@ -26,6 +26,8 @@ const board = require('./routes/Board');
 app.use('/board', board);
 const comment = require('./routes/Comment');
 app.use('/comment', comment);
+const like = require('./routes/Like');
+app.use('/like', like);
 
 db.sequelize.sync().then(() => {
   app.listen(3002, () => {
