@@ -2,32 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { Member } = require('../models/');
 
-router.get('/userInfo', async (req, res) => {
-  // if (!req.session.login) {
-  //   req.session.login = false;
-  //   req.session.idx = -1;
-  // }
-  // console.log('req.body: ' + req.body);
-  // const id = req.body.id;
-  // try {
-  //   if (req.mamber) {
-  //     const member = await Member.findOne({
-  //       where: {
-  //         id: id,
-  //       },
-  //     });
-  //     res.status(200).json(member);
-  //     res.send(mamber);
-  //     console.log(user_id + ', ' + id + ', ' + password + ', ' + userName);
-  //   } else {
-  //     res.status(200).json(null);
-  //   }
-  // } catch (err) {
-  //   console.error(err);
-  //   next(err);
-  // }
-});
-
 router.post('/login', async (req, res) => {
   const user_id = req.body.id;
   const user_pass = req.body.password;
