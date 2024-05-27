@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { format, parseISO } from 'date-fns';
 import styles from './Board.module.css';
 import Header from './Header';
 import axios from 'axios';
 
 function Board({ isLogin }) {
   const { boardId } = useParams();
+
+  const pathname = useLocation();
   const navigate = useNavigate();
-  const [postData, setPostData] = useState('');
+
+  const [postData, setPostData] = useState([]);
   useEffect(() => {
     axios
       .get('http://localhost:3002/board/boardDetail/' + boardId)
@@ -17,28 +21,55 @@ function Board({ isLogin }) {
 
         let post = res.data;
 
+        //특정 게시글 db 가져오기
         console.log('post: ' + JSON.stringify(post));
         setPostData(post);
+
+        //createdAt 변경
+        const formatCreatedAt = (createdAt) => {
+          if (!createdAt) return '';
+          const createdAtDate = parseISO(createdAt);
+          return format(createdAtDate, 'yyyy.MM.dd HH:mm');
+        };
+        setPostData((post) => {
+          const newCreatedAt = formatCreatedAt(post.createdAt);
+          return {
+            ...post,
+            createdAt: newCreatedAt,
+          };
+        });
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  const [commentList, setCommentList] = useState('');
+  const [commentList, setCommentList] = useState([]);
 
   //댓글 가져오기
   useEffect(() => {
     axios
       .get('http://localhost:3002/comment/commentList/' + boardId)
       .then((res) => {
-        const comments = res.data.reverse();
-        console.log('--comment--' + JSON.stringify(comments));
-        setCommentList(comments);
+        const comments = res.data;
+
+        const updatedComments = comments.map((post) => {
+          const formattedDate = format(new Date(post.createdAt), 'yyyy.MM.dd');
+
+          return {
+            ...post,
+            createdAt: formattedDate,
+          };
+        });
+        setCommentList(updatedComments);
       })
       .catch((err) => {
         console.log(err);
       });
+  }, []);
+
+  useEffect(() => {
+    //createdAt 변경
   }, []);
 
   const [commentCount, setCommentCount] = useState(0);
@@ -48,7 +79,6 @@ function Board({ isLogin }) {
     axios
       .get('http://localhost:3002/comment/commentCount/' + boardId)
       .then((res) => {
-        console.log('--likeCount--' + JSON.stringify(res));
         setCommentCount(res.data);
       })
       .catch((err) => {
@@ -65,7 +95,6 @@ function Board({ isLogin }) {
 
   const submitForm = (event) => {
     event.preventDefault();
-    console.log(comment);
 
     axios
       .post('http://localhost:3002/comment/write', {
@@ -132,71 +161,108 @@ function Board({ isLogin }) {
   let [likeCount, setLikeCount] = useState(1);
 
   useEffect(() => {
-    //로그인한 사용자의 해당 글 좋아요 여부 가져오기
-    axios
-      .get('http://localhost:3002/like/likeState/' + boardId + '/' + userId)
-      .then((res) => {
-        console.log('--like--' + JSON.stringify(res));
-        if (res.data == null) {
-          setLikeState(false);
-          console.log('좋아요 상태: ' + likeState);
-        } else {
-          setLikeState(true);
-          console.log('좋아요 상태: ' + likeState);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (isLogin) {
+      //로그인한 사용자의 해당 글 좋아요 여부 가져오기
+      axios
+        .get('http://localhost:3002/like/likeState/' + boardId + '/' + userId)
+        .then((res) => {
+          console.log('--likeState--  ' + JSON.stringify(res.data));
+          if (res.data !== null && res.data !== undefined) {
+            setLikeState(true);
+          } else {
+            setLikeState(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, []);
+
+  console.log('좋아요 상태: ' + likeState);
 
   useEffect(() => {
     //해당 글의 전체 좋아요 수 가져오기
     axios
       .get('http://localhost:3002/like/likeCount/' + boardId)
       .then((res) => {
-        console.log('--likeCount--' + JSON.stringify(res));
         setLikeCount(res.data);
+        console.log('---likeCount---' + res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  const onClickLogin = () => {
-    //로그인 여부 물어보는 걸로 바꾸기!!!
-    window.alert('로그인후 이용 가ㅡㅇㄹ');
-  };
+  const onClickLike = async () => {
+    const newLikeState = !likeState;
 
-  const onClickLike = () => {
-    setLikeState(!likeState);
-    console.log('좋아요 상태: ' + likeState);
-    if (likeState == false) {
+    // 상태 업데이트
+    setLikeState(newLikeState);
+    console.log('클릭 후 좋아요 상태: ' + newLikeState);
+    if (newLikeState) {
       //좋아요 db 생성
-      axios
+      await axios
         .post('http://localhost:3002/like/addLike', {
           board_id: boardId,
           user_id: userId,
         })
-        .then((res) => {
-          console.log('좋아요 추가 완료');
+        .then((addResponse) => {
+          if (addResponse.status === 200) {
+            console.log('좋아요 추가 완료');
+            return axios.get('http://localhost:3002/like/likeCount/' + boardId);
+          } else {
+            console.error(
+              '좋아요 추가 실패:',
+              addResponse.status,
+              addResponse.statusText
+            );
+            throw new Error('좋아요 추가 실패');
+          }
+        })
+        .then((response) => {
+          console.log('likeCount response:', response);
+          setLikeCount(response.data);
+          console.log('---likeCount---' + response.data);
         })
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      //좋아요 db 삭제
+    } else if (newLikeState === false) {
+      console.log('좋아요 제거 시작');
       axios
         .post('http://localhost:3002/like/deleteLike', {
           board_id: boardId,
           user_id: userId,
         })
-        .then((res) => {
-          console.log('좋아요 제거 완료');
+        .then((deleteResponse) => {
+          if (deleteResponse.status === 200) {
+            console.log('좋아요 제거 완료');
+            return axios.get('http://localhost:3002/like/likeCount/' + boardId);
+          } else {
+            console.error(
+              '좋아요 제거 실패:',
+              deleteResponse.status,
+              deleteResponse.statusText
+            );
+            throw new Error('좋아요 제거 실패');
+          }
+        })
+        .then((response) => {
+          console.log('likeCount response:', response);
+          setLikeCount(response.data);
+          console.log('---likeCount---' + response.data);
         })
         .catch((err) => {
-          console.log(err);
+          console.error('좋아요 제거 또는 좋아요 수 조회 중 에러 발생:', err);
         });
+    }
+  };
+
+  const onClickLogin = () => {
+    var result = window.confirm('로그인후 이용 가능');
+    if (result) {
+      navigate('/login', { state: { pathname: pathname } });
     }
   };
 
@@ -208,7 +274,7 @@ function Board({ isLogin }) {
         <div className={styles.board_header}>
           <span>{postData.title}</span>
           <div className={styles.board_data}>
-            <span>postData.Member.userName</span>
+            <span>{postData.Member?.userName || '알 수 없음'}</span>
             <span>{postData.createdAt}</span>
           </div>
         </div>
@@ -219,6 +285,7 @@ function Board({ isLogin }) {
           <div className={styles.like_article}>
             {isLogin ? (
               <div className={styles.like_icon} onClick={onClickLike}>
+                {console.log('==setlikeCount== ' + likeCount)}
                 {likeState ? (
                   <img
                     src="/assets/Board/icon-heart-full.png"

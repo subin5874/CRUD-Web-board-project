@@ -18,6 +18,8 @@ router.post('/deleteLike', async (req, res) => {
       board_id: board_id,
       user_id: user_id,
     },
+  }).then((result) => {
+    res.json(result);
   });
 });
 
