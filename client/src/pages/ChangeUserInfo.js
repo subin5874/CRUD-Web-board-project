@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './ChangeUserInfo.module.css';
 import axios from 'axios';
 import Header from './Header';
@@ -24,19 +24,15 @@ function ChangeUserInfo({ isLogin }) {
   const [UserName, setUserName] = useState(userInfo.userName);
 
   const onIdHandler = (e) => {
-    console.log(e.currentTarget.value);
     setID(e.currentTarget.value);
   };
 
   const onUserNameHandler = (e) => {
-    console.log(e.currentTarget.value);
     setUserName(e.currentTarget.value);
   };
 
   //정보 수정
   const submitForm = (data) => {
-    console.log(data);
-
     axios
       .post(
         'http://localhost:3002/user_inform/change_info/' + userInfo.user_id,
@@ -59,7 +55,7 @@ function ChangeUserInfo({ isLogin }) {
   };
 
   const isCancel = (e) => {
-    window.alert('취소함');
+    navigate('/mypage');
   };
 
   return (
@@ -121,13 +117,12 @@ function ChangeUserInfo({ isLogin }) {
               )}
             </div>
             <div className={styles.btn_container}>
-              <button
+              <input
                 type="reset"
                 onClick={isCancel}
                 className={styles.change_Cancel}
-              >
-                취소
-              </button>
+                value="취소"
+              />
               <button
                 type="submit"
                 disabled={isSubmitting}

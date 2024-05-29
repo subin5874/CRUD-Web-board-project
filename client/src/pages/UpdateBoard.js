@@ -12,16 +12,12 @@ function UpdateBoard({ isLogin }) {
   const [Title, setTitle] = useState('');
   const [Content, setContent] = useState('');
 
-  const [postData, setPostData] = useState('');
-
   //수정할 글의 DB 가져오기
   useEffect(() => {
     axios
       .get('http://localhost:3002/board/boardDetail/' + boardId)
       .then((res) => {
         const post = res.data;
-        setPostData(post);
-        console.log('--post--: ' + JSON.stringify(post));
 
         setTitle(post.title);
         setContent(post.content);
@@ -40,7 +36,6 @@ function UpdateBoard({ isLogin }) {
 
   //글 수정
   const submitUpdateForm = (event) => {
-    // 버튼만 누르면 리로드 되는것을 막아줌
     event.preventDefault();
 
     axios
@@ -60,7 +55,7 @@ function UpdateBoard({ isLogin }) {
       });
   };
 
-  const onConcelBtn = (evernt) => {
+  const onCancelBtn = (evernt) => {
     navigate(-1);
   };
 
@@ -84,9 +79,12 @@ function UpdateBoard({ isLogin }) {
               />
             </div>
             <div className={styles.btn_box}>
-              <button className={styles.write_cancel} conClike={onConcelBtn}>
-                취소
-              </button>
+              <input
+                type="button"
+                className={styles.write_cancel}
+                onClick={onCancelBtn}
+                value="취소"
+              />
               <button type="submit" className={styles.write_submitb}>
                 수정
               </button>
