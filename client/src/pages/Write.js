@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import styles from './Write.module.css';
 import Header from './Header';
 import axios from 'axios';
@@ -20,7 +18,6 @@ function Write({ isLogin }) {
   };
 
   const submitForm = (event) => {
-    // 버튼만 누르면 리로드 되는것을 막아줌
     event.preventDefault();
 
     console.log(Title);

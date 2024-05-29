@@ -8,7 +8,7 @@ import Header from './Header';
 import axios from 'axios';
 
 function Mypage({ isLogin }) {
-  console.log(sessionStorage.data);
+  console.log('sessionStorage.data: ' + sessionStorage.data);
   const [userInfo, setUserInfo] = useState({
     id: sessionStorage.getItem('id'),
     user_id: sessionStorage.getItem('user_id'),
@@ -37,7 +37,6 @@ function Mypage({ isLogin }) {
       .then((res) => {
         const likecount = res.data;
         setLikeCount(likecount);
-        console.log('-likeccounef--' + likeCount);
       })
       .catch((err) => {
         console.log(err);

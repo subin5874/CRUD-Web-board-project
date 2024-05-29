@@ -6,10 +6,10 @@ import Header from './Header';
 import axios from 'axios';
 
 function Home({ isLogin }) {
-  const userId = sessionStorage.getItem('user_id');
   const [postList, setPostList] = useState('');
+
+  //전체 게시글 가져오기
   useEffect(() => {
-    //전체 게시글 가져옴
     axios
       .get('http://localhost:3002/board/boardList')
       .then((res) => {
@@ -21,11 +21,12 @@ function Home({ isLogin }) {
       });
   }, []);
 
+  //전체 게시글 수
   const postCount = postList.length;
 
   const [likeCount, setLikeCount] = useState(0);
+  //전체 글의  좋아요 수 가져오기
   useEffect(() => {
-    //전체 글의  좋아요 수 가져오기
     axios
       .get('http://localhost:3002/like/likeCount')
       .then((res) => {
@@ -38,8 +39,8 @@ function Home({ isLogin }) {
   }, []);
 
   const [commentCount, setcommentCount] = useState(0);
+  //전체 글의  댓글 수 가져오기
   useEffect(() => {
-    //전체 글의  댓글 수 가져오기
     axios
       .get('http://localhost:3002/comment/commentCount')
       .then((res) => {
@@ -54,8 +55,7 @@ function Home({ isLogin }) {
   const [updatedPostList, setUpdatePostList] = useState([]);
 
   useEffect(() => {
-    console.log(JSON.stringify(commentCount));
-    console.log(Array.isArray(commentCount));
+    //console.log(Array.isArray(commentCount));
     if (Array.isArray(commentCount) && Array.isArray(likeCount)) {
       const commentCountMap = commentCount.reduce((map, item) => {
         map[item.board_id] = item.commentCount;
@@ -67,9 +67,7 @@ function Home({ isLogin }) {
         return map;
       }, {});
 
-      // postList 배열에 commentCount 추가
       const updatedList = postList.map((post) => {
-        //댓글 수와 좋아요 수
         const commentCount = commentCountMap[post.board_id] || 0;
         const likeCount = likeCountMap[post.board_id] || 0;
 
@@ -86,7 +84,7 @@ function Home({ isLogin }) {
           formattedDateTime = format(createdAtDate, 'yyyy.MM.dd');
         }
 
-        //댓글수, 좋아요수, createdAt 적용
+        //댓글수, 좋아요수, createdAt 추가
         return {
           ...post,
           commentCount: commentCount,

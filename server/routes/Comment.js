@@ -60,6 +60,8 @@ router.post('/deleteComment/:commentId', async (req, res) => {
     where: {
       comment_id: comment_id,
     },
+  }).then((deleteComment) => {
+    res.json(deleteComment);
   });
 });
 

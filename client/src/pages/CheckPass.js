@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './CheckPass.module.css';
 import Header from './Header';
 import axios from 'axios';
@@ -10,7 +10,6 @@ function CheckPass({ isLogin }) {
   const [Password, setPassword] = useState();
 
   const onPasswordHandler = (event) => {
-    console.log(event.currentTarget.value);
     setPassword(event.currentTarget.value);
   };
 
@@ -30,7 +29,6 @@ function CheckPass({ isLogin }) {
           window.alert('비밀번호가 일치하지 않습니다.');
           window.location.reload();
         } else if (res.data.password === Password) {
-          console.log('비밀번호 일치');
           navigate('/changeUserInfo');
         }
       })

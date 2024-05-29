@@ -8,6 +8,7 @@ function Login({ isLogin }) {
   const [ID, setID] = useState();
   const [Password, setPassword] = useState();
 
+  //이전 페이지의 url 가져오기
   const location = useLocation();
   const gobackURL = location.state.pathname.pathname;
   const navigate = useNavigate();
@@ -20,11 +21,7 @@ function Login({ isLogin }) {
   };
 
   const onSubmitHandler = (event) => {
-    // 버튼만 누르면 리로드 되는것을 막아줌
     event.preventDefault();
-
-    console.log(ID);
-    console.log(Password);
 
     axios
       .post('http://localhost:3002/user_inform/login', {
@@ -32,17 +29,12 @@ function Login({ isLogin }) {
         password: Password,
       })
       .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log('res.data.id :: ', res.data.id);
-        console.log('res.data.userName :: ', res.data.userName);
         if (res.data.id === undefined) {
-          // id 일치하지 않는 경우 userId = undefined, msg = '입력하신 id 가 일치하지 않습니다.'
-          console.log('======================', res.data.msg);
+          console.log('====로그인 실패 ====');
           alert('입력하신 아이디 또는 비밀번호가 일치하지 않습니다.');
         } else if (res.data.id === ID) {
-          // id, pw 모두 일치 userId = userId1, msg = undefined
-          console.log('======================', '로그인 성공');
+          console.log('====로그인 성공 ====');
+          //로그인 성공시 sessionStorage에 사용자 정보를 넣어준다
           sessionStorage.setItem('user_id', res.data.user_id);
           sessionStorage.setItem('id', res.data.id);
           sessionStorage.setItem('userName', res.data.userName);

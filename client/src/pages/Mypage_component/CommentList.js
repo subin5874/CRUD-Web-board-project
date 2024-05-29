@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import axios from 'axios';
-import PostList from './PostList';
 
 function CommentList() {
   const [commentData, setCommentData] = useState([]);
@@ -14,17 +13,12 @@ function CommentList() {
       .get('http://localhost:3002/comment/userCommentList/' + userId)
       .then((res) => {
         const userCommentList = res.data;
-        console.log(JSON.stringify(userCommentList));
         setCommentData(userCommentList);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-
-  useEffect(() => {
-    console.log(JSON.stringify(commentData));
-  }, [commentData]);
 
   const [updatedList, setUpdateList] = useState([]);
   useEffect(() => {

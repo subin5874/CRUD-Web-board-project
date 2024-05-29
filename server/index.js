@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //Routers
 const registrationRouter = require('./routes/Registration');
-app.use('/registration', registrationRouter); //라우터에 미들웨어 적용
+app.use('/registration', registrationRouter);
 const user_inform = require('./routes/User_inform');
 app.use('/user_inform', user_inform);
 const board = require('./routes/Board');

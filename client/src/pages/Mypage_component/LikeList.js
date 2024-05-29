@@ -8,14 +8,12 @@ import axios from 'axios';
 function LikeList() {
   const [postData, setPostData] = useState([]);
   const userId = sessionStorage.getItem('user_id');
+  //사용자가 작성한 글 가져오기
   useEffect(() => {
-    //사용자가 작성한 글 가져오기
     axios
       .get('http://localhost:3002/board/userLikeBoardList/' + userId)
       .then((res) => {
         const userBoardList = res.data;
-
-        console.log('--board--' + JSON.stringify(userBoardList));
         setPostData(userBoardList);
       })
       .catch((err) => {
@@ -24,8 +22,8 @@ function LikeList() {
   }, []);
 
   const [likeCount, setLikeCount] = useState(0);
+  //사용자 글의  좋아요 수 가져오기
   useEffect(() => {
-    //사용자 글의  좋아요 수 가져오기
     axios
       .get('http://localhost:3002/like/myPostLike/likeCount/' + userId)
       .then((res) => {
@@ -37,24 +35,19 @@ function LikeList() {
       });
   }, []);
 
-  //console.log(JSON.stringify(likeCount));
-
   const [commentCount, setcommentCount] = useState(0);
+  //사용자 글의  댓글 수 가져오기
   useEffect(() => {
-    //사용자 글의  댓글 수 가져오기
     axios
       .get('http://localhost:3002/comment/myPostLike/commentCount/' + userId)
       .then((res) => {
         const commentCountList = res.data;
         setcommentCount(commentCountList);
-        console.log(JSON.stringify(commentCount));
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-
-  //console.log(JSON.stringify(commentCount));
 
   const [updatedPostList, setUpdatePostList] = useState([]);
 
@@ -72,7 +65,6 @@ function LikeList() {
         return map;
       }, {});
 
-      // postData 배열에 commentCount 추가
       const updatedList = postData.map((post) => {
         //댓글 수와 좋아요 수
         const commentCount = commentCountMap[post.board_id] || 0;

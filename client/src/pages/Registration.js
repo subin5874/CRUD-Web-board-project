@@ -6,17 +6,15 @@ import axios from 'axios';
 import Header from './Header';
 
 function Registration({ isLogin }) {
-  const [Password, setPassword] = useState('');
-
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, isSubmitted, errors },
   } = useForm();
 
+  const [Password, setPassword] = useState('');
   const changePassword = (e) => {
     setPassword(e.target.value);
-    console.log(e.target.value);
   };
 
   const pathname = useLocation();

@@ -13,16 +13,12 @@ function Board({ isLogin }) {
   const navigate = useNavigate();
 
   const [postData, setPostData] = useState([]);
+  //특정 게시글 정보 가져오기
   useEffect(() => {
     axios
       .get('http://localhost:3002/board/boardDetail/' + boardId)
       .then((res) => {
-        console.log('res.data: ' + res.data);
-
         let post = res.data;
-
-        //특정 게시글 db 가져오기
-        console.log('post: ' + JSON.stringify(post));
         setPostData(post);
 
         //createdAt 변경
@@ -44,6 +40,32 @@ function Board({ isLogin }) {
       });
   }, []);
 
+  const userId = sessionStorage.getItem('user_id');
+
+  //글 수정버튼 클릭시 이동
+  const onUpdateBoardBtn = (evernt) => {
+    navigate('/updateBoard/' + boardId);
+  };
+
+  //글 삭제 버튼 클릭시
+  const onDeleteBoardBtn = (evernt) => {
+    if (window.confirm('글을 삭제하시겠습니까?') == true) {
+      //확인
+      axios
+        .post('http://localhost:3002/board/deleteBoard/' + boardId)
+        .then((res) => {
+          window.alert('글을 성공적으로 삭제했습니다.');
+        })
+        .catch((err) => {
+          console.log(err);
+          window.alert('글이 정상적으로 삭제되지 않았습니다.');
+        });
+    } else {
+      //취소
+      return false;
+    }
+  };
+
   const [commentList, setCommentList] = useState([]);
 
   //댓글 가져오기
@@ -53,6 +75,7 @@ function Board({ isLogin }) {
       .then((res) => {
         const comments = res.data;
 
+        //createdAt 변경
         const updatedComments = comments.map((post) => {
           const formattedDate = format(new Date(post.createdAt), 'yyyy.MM.dd');
 
@@ -66,10 +89,6 @@ function Board({ isLogin }) {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
-  useEffect(() => {
-    //createdAt 변경
   }, []);
 
   const [commentCount, setCommentCount] = useState(0);
@@ -93,6 +112,7 @@ function Board({ isLogin }) {
     setComment(event.currentTarget.value);
   };
 
+  //댓글 작성
   const submitForm = (event) => {
     event.preventDefault();
 
@@ -103,36 +123,12 @@ function Board({ isLogin }) {
         user_id: sessionStorage.getItem('user_id'),
       })
       .then((res) => {
-        console.log(res);
         window.location.reload();
       })
       .catch((err) => {
         console.log(err);
         window.alert('댓글 작성이 정상적으로 되지 않았습니다.');
       });
-  };
-
-  const userId = sessionStorage.getItem('user_id');
-
-  const onUpdateBoardBtn = (evernt) => {
-    navigate('/updateBoard/' + boardId);
-  };
-  const onDeleteBoardBtn = (evernt) => {
-    if (window.confirm('글을 삭제하시겠습니까?') == true) {
-      //확인
-      axios
-        .post('http://localhost:3002/board/deleteBoard/' + boardId)
-        .then((res) => {
-          window.alert('글을 성공적으로 삭제했습니다.');
-        })
-        .catch((err) => {
-          console.log(err);
-          window.alert('글이 정상적으로 삭제되지 않았습니다.');
-        });
-    } else {
-      //취소
-      return false;
-    }
   };
 
   const onDeleteCommentBtn = (event) => {
@@ -158,15 +154,14 @@ function Board({ isLogin }) {
   };
 
   const [likeState, setLikeState] = useState(false);
-  let [likeCount, setLikeCount] = useState(1);
+  let [likeCount, setLikeCount] = useState(0);
 
+  //로그인한 사용자의 해당 글 좋아요 여부 가져오기
   useEffect(() => {
     if (isLogin) {
-      //로그인한 사용자의 해당 글 좋아요 여부 가져오기
       axios
         .get('http://localhost:3002/like/likeState/' + boardId + '/' + userId)
         .then((res) => {
-          console.log('--likeState--  ' + JSON.stringify(res.data));
           if (res.data !== null && res.data !== undefined) {
             setLikeState(true);
           } else {
@@ -179,27 +174,23 @@ function Board({ isLogin }) {
     }
   }, []);
 
-  console.log('좋아요 상태: ' + likeState);
-
+  //해당 글의 전체 좋아요 수 가져오기
   useEffect(() => {
-    //해당 글의 전체 좋아요 수 가져오기
     axios
       .get('http://localhost:3002/like/likeCount/' + boardId)
       .then((res) => {
         setLikeCount(res.data);
-        console.log('---likeCount---' + res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
+  //좋아요 버튼 클릭시
   const onClickLike = async () => {
-    const newLikeState = !likeState;
-
     // 상태 업데이트
+    const newLikeState = !likeState;
     setLikeState(newLikeState);
-    console.log('클릭 후 좋아요 상태: ' + newLikeState);
     if (newLikeState) {
       //좋아요 db 생성
       await axios
@@ -209,7 +200,6 @@ function Board({ isLogin }) {
         })
         .then((addResponse) => {
           if (addResponse.status === 200) {
-            console.log('좋아요 추가 완료');
             return axios.get('http://localhost:3002/like/likeCount/' + boardId);
           } else {
             console.error(
@@ -221,15 +211,13 @@ function Board({ isLogin }) {
           }
         })
         .then((response) => {
-          console.log('likeCount response:', response);
           setLikeCount(response.data);
-          console.log('---likeCount---' + response.data);
         })
         .catch((err) => {
           console.log(err);
         });
     } else if (newLikeState === false) {
-      console.log('좋아요 제거 시작');
+      //좋아요 db 삭제
       axios
         .post('http://localhost:3002/like/deleteLike', {
           board_id: boardId,
@@ -237,7 +225,6 @@ function Board({ isLogin }) {
         })
         .then((deleteResponse) => {
           if (deleteResponse.status === 200) {
-            console.log('좋아요 제거 완료');
             return axios.get('http://localhost:3002/like/likeCount/' + boardId);
           } else {
             console.error(
@@ -249,9 +236,7 @@ function Board({ isLogin }) {
           }
         })
         .then((response) => {
-          console.log('likeCount response:', response);
           setLikeCount(response.data);
-          console.log('---likeCount---' + response.data);
         })
         .catch((err) => {
           console.error('좋아요 제거 또는 좋아요 수 조회 중 에러 발생:', err);
@@ -259,6 +244,7 @@ function Board({ isLogin }) {
     }
   };
 
+  //로그아웃 상태에서 좋아요 버튼 클릭시
   const onClickLogin = () => {
     var result = window.confirm('로그인후 이용 가능');
     if (result) {
@@ -285,7 +271,6 @@ function Board({ isLogin }) {
           <div className={styles.like_article}>
             {isLogin ? (
               <div className={styles.like_icon} onClick={onClickLike}>
-                {console.log('==setlikeCount== ' + likeCount)}
                 {likeState ? (
                   <img
                     src="/assets/Board/icon-heart-full.png"

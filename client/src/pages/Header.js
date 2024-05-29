@@ -6,7 +6,7 @@ function Header({ isLogin }) {
   const navigate = useNavigate();
   const isMatchPath = useMatch('/mypage');
   const onLogout = () => {
-    // sessionStorage 에 user_id 로 저장되어있는 아이템을 삭제
+    //sessionStorage 에 user_id 로 저장되어있는 아이템을 삭제
     sessionStorage.removeItem('user_id');
 
     if (isMatchPath !== null) {
