@@ -52,8 +52,6 @@ function LikeList() {
   const [updatedPostList, setUpdatePostList] = useState([]);
 
   useEffect(() => {
-    console.log(JSON.stringify(commentCount));
-    console.log(Array.isArray(commentCount));
     if (Array.isArray(commentCount) && Array.isArray(likeCount)) {
       const commentCountMap = commentCount.reduce((map, item) => {
         map[item.board_id] = item.commentCount;
@@ -94,8 +92,6 @@ function LikeList() {
       setUpdatePostList(updatedList);
     }
   }, [commentCount, likeCount]);
-
-  console.log(JSON.stringify(updatedPostList));
 
   return (
     <table>

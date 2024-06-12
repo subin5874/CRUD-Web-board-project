@@ -42,7 +42,6 @@ function ChangeUserInfo({ isLogin }) {
         }
       )
       .then((res) => {
-        console.log(res);
         window.alert('정보 변경이 완료되었습니다.');
         sessionStorage.setItem('id', data.id);
         sessionStorage.setItem('userName', data.nick);

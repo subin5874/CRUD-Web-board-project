@@ -33,8 +33,6 @@ function PostList() {
       });
   }, []);
 
-  console.log(JSON.stringify(likeCount));
-
   const [commentCount, setcommentCount] = useState(0);
   //사용자 글의  댓글 수 가져오기
   useEffect(() => {
@@ -52,8 +50,6 @@ function PostList() {
   const [updatedPostList, setUpdatePostList] = useState([]);
 
   useEffect(() => {
-    console.log(JSON.stringify(commentCount));
-    console.log(Array.isArray(commentCount));
     if (Array.isArray(commentCount) && Array.isArray(likeCount)) {
       const commentCountMap = commentCount.reduce((map, item) => {
         map[item.board_id] = item.commentCount;

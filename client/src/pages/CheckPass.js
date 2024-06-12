@@ -17,7 +17,6 @@ function CheckPass({ isLogin }) {
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
-    console.log(Password);
 
     axios
       .post('http://localhost:3002/user_inform/checkPass', {

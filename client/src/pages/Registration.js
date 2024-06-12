@@ -22,8 +22,6 @@ function Registration({ isLogin }) {
 
   //회원가입 정보 입력
   const submitForm = (data) => {
-    console.log(data);
-
     axios
       .post('http://localhost:3002/registration', {
         id: data.id,
@@ -31,7 +29,6 @@ function Registration({ isLogin }) {
         userName: data.nick,
       })
       .then((res) => {
-        console.log(res);
         window.alert('회원가입이 완료되었습니다.');
         navigate('/login', { state: { pathname: pathname } });
       })

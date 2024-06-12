@@ -8,7 +8,6 @@ import Header from './Header';
 import axios from 'axios';
 
 function Mypage({ isLogin }) {
-  console.log('sessionStorage.data: ' + sessionStorage.data);
   const [userInfo, setUserInfo] = useState({
     id: sessionStorage.getItem('id'),
     user_id: sessionStorage.getItem('user_id'),
@@ -53,7 +52,6 @@ function Mypage({ isLogin }) {
   const handleClickButton = (e) => {
     setCategory(e.target.name);
     setContent(e.target.name);
-    console.log(category);
   };
 
   const selectComponent = {

@@ -20,9 +20,6 @@ function Write({ isLogin }) {
   const submitForm = (event) => {
     event.preventDefault();
 
-    console.log(Title);
-    console.log(Content);
-
     axios
       .post('http://localhost:3002/board/write', {
         title: Title,
@@ -30,7 +27,6 @@ function Write({ isLogin }) {
         user_id: sessionStorage.getItem('user_id'),
       })
       .then((res) => {
-        console.log(res);
         window.alert('글을 성공적으로 작성하였습니다.');
         navigate('/');
       })

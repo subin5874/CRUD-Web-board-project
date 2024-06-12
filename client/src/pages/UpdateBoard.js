@@ -44,7 +44,6 @@ function UpdateBoard({ isLogin }) {
         content: Content,
       })
       .then((res) => {
-        console.log(res);
         window.alert('글을 성공적으로 수정하였습니다.');
         navigate('/post/' + boardId);
       })
