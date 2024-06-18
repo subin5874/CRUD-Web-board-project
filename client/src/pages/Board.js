@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { format, parseISO } from 'date-fns';
 import styles from './Board.module.css';
@@ -252,6 +251,10 @@ function Board({ isLogin }) {
     }
   };
 
+  const onClickComment = () => {
+    navigate('/login', { state: { pathname: pathname } });
+  };
+
   return (
     <div className="main">
       <Header isLogin={isLogin} />
@@ -352,9 +355,9 @@ function Board({ isLogin }) {
             </form>
           ) : (
             <div className={styles.disable_comment}>
-              <Link to="/login" className={styles.disable_message}>
+              <span onClick={onClickComment} className={styles.disable_message}>
                 로그인하고 댓글을 작성하세요.
-              </Link>
+              </span>
             </div>
           )}
         </div>
