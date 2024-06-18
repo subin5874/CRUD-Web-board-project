@@ -177,4 +177,5 @@ input:focus {
   text-decoration: none;
   display: inline-block;
   margin: 15px;
+  color: gray;
 }
