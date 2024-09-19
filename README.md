@@ -39,10 +39,9 @@ React를 기반으로한 웹 게시판입니다.
 
 ### DB
 
-- mysql
 - sequelize
 
-<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> <img src="https://img.shields.io/badge/sequelize-52B0E7?style=for-the-badge&logo=sequelize&logoColor=white"> 
+<img src="https://img.shields.io/badge/sequelize-52B0E7?style=for-the-badge&logo=sequelize&logoColor=white"> 
 
 ## 버전 관리 시스템
 
